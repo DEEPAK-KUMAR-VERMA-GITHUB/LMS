@@ -3,16 +3,11 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+const redisUrl = process.env.REDIS_URL;
 
-if (!redisUrl || !redisToken) {
+if (!redisUrl) {
   throw new Error("Redis URL or token is not defined");
 }
 
-const redisClient = new redis({
-  host: process.env.UPSTASH_REDIS_REST_URL,
-  port: parseInt(process.env.UPSTASH_REDIS_REST_TOKEN || "6379"),
-});
-
+const redisClient = new redis(redisUrl);
 export default redisClient;

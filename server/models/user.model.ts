@@ -1,11 +1,16 @@
 import bcrypt from "bcryptjs";
 import mongoose, { Document, Model, Schema } from "mongoose";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+
+dotenv.config();
 
 const emailRegexPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegexPattern: RegExp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 export interface IUser extends Document {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -17,6 +22,8 @@ export interface IUser extends Document {
   isVerified: boolean;
   courses: Array<{ courseId: string }>;
   comparePassword: (password: string) => Promise<boolean>;
+  SignAccessToken: () => string;
+  SignRefreshToken: () => string;
   createdAt: Date;
 }
 
@@ -84,6 +91,20 @@ userSchema.methods.comparePassword = async function (
   enteredPassword: string
 ): Promise<boolean> {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// sign access token
+userSchema.methods.SignAccessToken = function () {
+  return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN_SECRET || "", {
+    expiresIn: "5m",
+  });
+};
+
+// sign refresh token
+userSchema.methods.SignRefreshToken = function () {
+  return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN_SECRET || "", {
+    expiresIn: "3d",
+  });
 };
 
 export const UserModel: Model<IUser> = mongoose.model<IUser>(

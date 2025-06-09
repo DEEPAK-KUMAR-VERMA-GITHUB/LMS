@@ -1,19 +1,18 @@
+import ejs from "ejs";
 import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import path from "path";
+import redisClient from "../db/redis";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import { IUser, UserModel } from "../models/user.model";
 import ErrorHandler from "../utils/ErrorHandler";
-import jwt, { JwtPayload, Secret } from "jsonwebtoken";
-import ejs from "ejs";
-import path from "path";
-import sendMail from "../utils/sendMail";
 import {
   accessTokenOptions,
-  ITokenOptions,
   refreshTokenOptions,
   sendToken,
 } from "../utils/jwt";
-import redisClient from "../db/redis";
-import { getUserById } from "../services/user.service";
+import sendMail from "../utils/sendMail";
+import { removeImage, uploadImage } from "../utils/cloudinary";
 
 // register user
 interface IRegistrationBody {
@@ -159,7 +158,7 @@ export const loginUser = catchAsyncErrors(
         return next(ErrorHandler.wrongCredentials("Invalid credentials"));
       }
 
-      sendToken(user, 200, res);
+      await sendToken(user, 200, res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
@@ -255,7 +254,16 @@ export const getUserInfo = catchAsyncErrors(
     try {
       const userId = req.user?._id as string;
 
-      getUserById(userId, res);
+      const user = await redisClient.get(userId);
+
+      if (!user) {
+        return next(ErrorHandler.notFound("User not found"));
+      }
+
+      res.status(200).json({
+        success: true,
+        user: JSON.parse(user),
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
@@ -277,10 +285,132 @@ export const socialAuth = catchAsyncErrors(
 
       if (!user) {
         const newUser = await UserModel.create({ email, name, avatar });
-        sendToken(newUser, 201, res);
+        await sendToken(newUser, 201, res);
       } else {
-        sendToken(user, 200, res);
+        await sendToken(user, 200, res);
       }
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// update user info
+interface IUpdateUserInfo {
+  name?: string;
+}
+
+export const updateUserInfo = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { name } = req.body as IUpdateUserInfo;
+      const userId = req.user?._id;
+
+      const user = await UserModel.findById(userId);
+
+      if (!user) {
+        return next(ErrorHandler.notFound("User not found"));
+      }
+
+      if (name) {
+        user.name = name;
+      }
+
+      await user.save();
+
+      await redisClient.set(userId as string, JSON.stringify(user));
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// update user password
+interface IUpdatePasswordBody {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export const updatePassword = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { oldPassword, newPassword } = req.body as IUpdatePasswordBody;
+
+      if (!oldPassword || !newPassword) {
+        return next(
+          ErrorHandler.validationError("Please enter old and new password")
+        );
+      }
+
+      const user = await UserModel.findById(req.user?._id).select("+password");
+
+      if (!user) {
+        return next(ErrorHandler.notFound("User not found"));
+      }
+
+      if (!!!user.password) {
+        return next(ErrorHandler.wrongCredentials("Invalid credentials"));
+      }
+
+      const isPasswordMatched = await user.comparePassword(oldPassword);
+
+      if (!isPasswordMatched) {
+        return next(ErrorHandler.wrongCredentials("Invalid credentials"));
+      }
+
+      user.password = newPassword;
+
+      await user.save();
+
+      res.status(201).json({
+        success: true,
+        user,
+        message: "Password updated successfully",
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// update profile picture
+interface IUpdateProfilePicture {
+  avatar: string;
+}
+
+export const updateProfilePicture = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { avatar } = req.body;
+
+      const user = await UserModel.findById(req.user?._id);
+
+      if (!user) {
+        return next(ErrorHandler.notFound("User not found"));
+      }
+
+      if (avatar) {
+        if (user.avatar?.public_id) {
+          await removeImage(user.avatar.public_id);
+        }
+
+        const { public_id, url } = await uploadImage(avatar);
+        user.avatar = { public_id, url };
+
+        await user.save();
+
+        await redisClient.set(user._id as string, JSON.stringify(user));
+      }
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }

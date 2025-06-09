@@ -29,12 +29,16 @@ export const refreshTokenOptions: ITokenOptions = {
   sameSite: "lax",
 };
 
-export const sendToken = (user: IUser, statusCode: number, res: Response) => {
+export const sendToken = async (
+  user: IUser,
+  statusCode: number,
+  res: Response
+) => {
   const accessToken = user.SignAccessToken();
   const refreshToken = user.SignRefreshToken();
 
   // upload session to redis
-  redisClient.set(user._id, JSON.stringify(user) as any);
+  await redisClient.set(user._id, JSON.stringify(user) as any);
 
   // only set secure to true in production
   if (process.env.NODE_ENV === "production") {

@@ -3,6 +3,8 @@ import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 import {
   addAnswer,
   addQuestion,
+  addReplyToReview,
+  addReview,
   editCourse,
   getAllCourses,
   getCourseByUser,
@@ -38,7 +40,12 @@ courseRouter.get(
 
 courseRouter.put("/add-question", isAuthenticated, addQuestion);
 courseRouter.put("/add-answer", isAuthenticated, addAnswer);
-
-
+courseRouter.put("/add-review/:courseId", isAuthenticated, addReview);
+courseRouter.put(
+  "/add-review-reply/:courseId",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  addReplyToReview
+);
 
 export default courseRouter;

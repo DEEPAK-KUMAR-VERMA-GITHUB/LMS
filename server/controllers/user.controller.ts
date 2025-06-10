@@ -399,7 +399,7 @@ export const updateProfilePicture = catchAsyncErrors(
           await removeImage(user.avatar.public_id);
         }
 
-        const { public_id, url } = await uploadImage(avatar);
+        const { public_id, url } = await uploadImage(avatar, "avatar", true);
         user.avatar = { public_id, url };
 
         await user.save();

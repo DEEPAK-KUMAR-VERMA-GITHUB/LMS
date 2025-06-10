@@ -7,11 +7,15 @@ cloudinary.v2.config({
   secure: true,
 });
 
-export const uploadImage = async (image: string) => {
+export const uploadImage = async (
+  image: string,
+  folder?: string,
+  crop?: boolean
+) => {
   const options = {
-    folder: "lms",
-    width: 150,
-    crop: "scale",
+    folder: folder || "lms",
+    width: crop ? 150 : undefined,
+    crop: crop ? "scale" : undefined,
   };
 
   const result = await cloudinary.v2.uploader.upload(image, options);

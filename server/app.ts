@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import errorMiddleware from "./middleware/error";
 import userRoutes from "./routes/user.route";
+import courseRoutes from "./routes/course.route";
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.get("/health", (req: Request, res: Response) => {
 
 // API routes
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/courses", courseRoutes);
 
 // unknown routes
 app.all("*", (req: Request, res: Response, next: NextFunction) => {

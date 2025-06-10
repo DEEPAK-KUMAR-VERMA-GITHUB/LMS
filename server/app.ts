@@ -6,6 +6,7 @@ import errorMiddleware from "./middleware/error";
 import userRoutes from "./routes/user.route";
 import courseRoutes from "./routes/course.route";
 import orderRoutes from "./routes/Order.route";
+import notificationRoutes from "./routes/notification.route";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.get("/health", (req: Request, res: Response) => {
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/orders", orderRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
 
 // unknown routes
 app.all("*", (req: Request, res: Response, next: NextFunction) => {

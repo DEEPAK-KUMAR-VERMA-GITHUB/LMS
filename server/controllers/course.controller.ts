@@ -3,6 +3,7 @@ import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 import { removeImage, uploadImage } from "../utils/cloudinary";
 import CourseModel from "../models/course.model";
+import redisClient from "../db/redis";
 
 // upload course
 export const uploadCourse = catchAsyncErrors(
@@ -23,13 +24,13 @@ export const uploadCourse = catchAsyncErrors(
 
       const course = await CourseModel.create(data);
 
-      res.send(201).json({
+      res.status(201).json({
         success: true,
         message: "Course created successfully",
         course,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -64,13 +65,80 @@ export const editCourse = catchAsyncErrors(
         { new: true }
       );
 
-      res.send(201).json({
+      res.status(201).json({
         success: true,
         message: "Course updated successfully",
         course,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+// get single course -- without purchasing
+export const getSingleCourse = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { courseId } = req.params;
+
+      // check if course cache exists in redis
+      const isCacheExists = await redisClient.get(courseId);
+
+      if (isCacheExists) {
+        const course = JSON.parse(isCacheExists);
+        return res.status(200).json({
+          success: true,
+          course,
+        });
+      } else {
+        const course = await CourseModel.findById(courseId).select(
+          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+        );
+
+        if (!course) {
+          return next(ErrorHandler.notFound("Course not found"));
+        }
+
+        // put course in redis
+        await redisClient.set(courseId, JSON.stringify(course));
+
+        res.status(200).json({
+          success: true,
+          course,
+        });
+      }
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+// get all courses -- without purchasing
+export const getAllCourses = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const isCacheExists = await redisClient.get("allCourses");
+
+      if (isCacheExists) {
+        return res.status(200).json({
+          success: true,
+          courses: JSON.parse(isCacheExists),
+        });
+      } else {
+        const courses = await CourseModel.find().select(
+          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+        );
+
+        await redisClient.set("allCourses", JSON.stringify(courses));
+
+        res.status(200).json({
+          success: true,
+          courses,
+        });
+      }
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );

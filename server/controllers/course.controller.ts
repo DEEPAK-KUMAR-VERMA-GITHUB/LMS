@@ -4,6 +4,10 @@ import ErrorHandler from "../utils/ErrorHandler";
 import { removeImage, uploadImage } from "../utils/cloudinary";
 import CourseModel from "../models/course.model";
 import redisClient from "../db/redis";
+import mongoose from "mongoose";
+import path from "path";
+import ejs from "ejs";
+import sendMail from "../utils/sendMail";
 
 // upload course
 export const uploadCourse = catchAsyncErrors(
@@ -170,6 +174,137 @@ export const getCourseByUser = catchAsyncErrors(
       res.status(200).json({
         success: true,
         content,
+      });
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+// add question in course
+interface IAddQuestionData {
+  question: string;
+  courseId: string;
+  contentId: string;
+}
+
+export const addQuestion = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { question, contentId, courseId }: IAddQuestionData = req.body;
+      const course = await CourseModel.findById(courseId);
+
+      if (!mongoose.Types.ObjectId.isValid(contentId)) {
+        return next(ErrorHandler.validationError("Invalid content ID"));
+      }
+
+      const courseContent = course?.courseData.find((item: any) =>
+        item._id.equals(contentId)
+      );
+
+      if (!courseContent) {
+        return next(ErrorHandler.validationError("Invalid content ID"));
+      }
+
+      // create a new question
+      const newQuestion: any = {
+        user: req.user,
+        question,
+        questionReplies: [],
+      };
+
+      // add this question to course content
+      courseContent.questions.push(newQuestion);
+
+      // save the updated course
+      await course?.save();
+
+      res.status(200).json({
+        success: true,
+        course,
+      });
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+// add answer in course question
+interface IAddAnswerData {
+  answer: string;
+  courseId: string;
+  contentId: string;
+  questionId: string;
+}
+
+export const addAnswer = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { answer, courseId, contentId, questionId }: IAddAnswerData =
+        req.body;
+
+      const course = await CourseModel.findById(courseId);
+
+      if (!mongoose.Types.ObjectId.isValid(contentId)) {
+        return next(ErrorHandler.validationError("Invalid content ID"));
+      }
+
+      const courseContent = course?.courseData.find((item: any) =>
+        item._id.equals(contentId)
+      );
+
+      if (!courseContent) {
+        return next(ErrorHandler.validationError("Invalid content ID"));
+      }
+
+      const question = courseContent?.questions?.find((item: any) =>
+        item._id.equals(questionId)
+      );
+
+      if (!question) {
+        return next(ErrorHandler.validationError("Invalid question ID"));
+      }
+
+      // create a new answer
+      const newAnswer: any = {
+        user: req.user,
+        answer,
+      };
+
+      // add this answer to question replies
+      question?.questionReplies?.push(newAnswer);
+
+      // save the updated course
+      await course?.save();
+
+      if (req.user?._id === question.user?._id) {
+        //TODO - create a notification
+      } else {
+        const data = {
+          name: question.user.name,
+          title: courseContent.title,
+        };
+
+        const html = await ejs.renderFile(
+          path.join(__dirname, "../mails/question-reply.ejs"),
+          data
+        );
+
+        try {
+          await sendMail({
+            email: question.user.email,
+            subject: "Qustion Reply",
+            template: "question-reply.ejs",
+            data,
+          });
+        } catch (error: any) {
+          return next(ErrorHandler.serverError(error.message));
+        }
+      }
+
+      res.status(200).json({
+        success: true,
+        course,
       });
     } catch (error: any) {
       return next(ErrorHandler.serverError(error.message));

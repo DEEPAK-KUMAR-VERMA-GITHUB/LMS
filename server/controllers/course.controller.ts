@@ -451,3 +451,21 @@ export const addReplyToReview = catchAsyncErrors(
     }
   }
 );
+
+// get all courses -- only admin
+export const getAdminAllCourses = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const courses = await CourseModel.find().sort({
+        createdAt: -1,
+      });
+
+      res.status(200).json({
+        success: true,
+        courses,
+      });
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);

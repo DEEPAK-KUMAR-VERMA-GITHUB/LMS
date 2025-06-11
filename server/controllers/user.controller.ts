@@ -61,7 +61,7 @@ export const registerUser = catchAsyncErrors(
         activationToken: activationToken.token,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -160,7 +160,7 @@ export const loginUser = catchAsyncErrors(
 
       await sendToken(user, 200, res);
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -180,7 +180,7 @@ export const logoutUser = catchAsyncErrors(
         message: "User logged out successfully",
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -243,7 +243,7 @@ export const updateAccessToken = catchAsyncErrors(
         accessToken,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -265,7 +265,7 @@ export const getUserInfo = catchAsyncErrors(
         user: JSON.parse(user),
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -290,7 +290,7 @@ export const socialAuth = catchAsyncErrors(
         await sendToken(user, 200, res);
       }
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -325,7 +325,7 @@ export const updateUserInfo = catchAsyncErrors(
         user,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -373,7 +373,7 @@ export const updatePassword = catchAsyncErrors(
         message: "Password updated successfully",
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );
@@ -412,7 +412,23 @@ export const updateProfilePicture = catchAsyncErrors(
         user,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+// get all users -- admin only
+export const getAllUsers = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = await UserModel.find().sort({ createdAt: -1 });
+
+      res.status(200).json({
+        success: true,
+        users,
+      });
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );

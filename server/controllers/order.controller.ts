@@ -101,7 +101,23 @@ export const createOrder = catchAsyncErrors(
         order,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+// get all orders -- admin only
+export const getAllOrders = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const orders = await OrderModel.find().sort({ createdAt: -1 });
+
+      res.status(200).json({
+        success: true,
+        orders,
+      });
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
     }
   }
 );

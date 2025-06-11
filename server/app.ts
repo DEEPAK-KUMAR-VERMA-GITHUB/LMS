@@ -7,6 +7,7 @@ import userRoutes from "./routes/user.route";
 import courseRoutes from "./routes/course.route";
 import orderRoutes from "./routes/Order.route";
 import notificationRoutes from "./routes/notification.route";
+import analyticsRoutes from "./routes/analytics.route";
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
+app.use("/api/v1/analytics", analyticsRoutes);
 
 // unknown routes
 app.all("*", (req: Request, res: Response, next: NextFunction) => {

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   activateUser,
+  deleteUser,
   getAllUsers,
   getUserInfo,
   loginUser,
@@ -11,6 +12,7 @@ import {
   updatePassword,
   updateProfilePicture,
   updateUserInfo,
+  updateUserRole,
 } from "../controllers/user.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
@@ -20,17 +22,24 @@ router.post("/registration", registerUser);
 router.post("/activate-user", activateUser);
 router.post("/login", loginUser);
 router.post("/logout", isAuthenticated, logoutUser);
-router.get("/refresh-token", updateAccessToken);
+router.get("/refresh-tokben", updateAccessToken);
 router.get("/me", isAuthenticated, getUserInfo);
 router.post("/social-auth", socialAuth);
 router.put("/update-user-info", isAuthenticated, updateUserInfo);
 router.put("/update-user-password", isAuthenticated, updatePassword);
 router.put("/update-user-avatar", isAuthenticated, updateProfilePicture);
-router.get(
-  "get-users",
+router.get("get-users", isAuthenticated, authorizeRoles("admin"), getAllUsers);
+router.put(
+  "/update-user-role",
   isAuthenticated,
   authorizeRoles("admin"),
-  getAllUsers
+  updateUserRole
+);
+router.delete(
+  "/delete-user/:id",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  deleteUser
 );
 
 export default router;

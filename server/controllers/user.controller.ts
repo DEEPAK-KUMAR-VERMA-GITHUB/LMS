@@ -432,3 +432,57 @@ export const getAllUsers = catchAsyncErrors(
     }
   }
 );
+
+// update user role -- only admin
+export const updateUserRole = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id, role } = req.body;
+
+      const user = await UserModel.findByIdAndUpdate(
+        id,
+        { role },
+        { new: true }
+      );
+
+      if (!user) {
+        return next(ErrorHandler.notFound("User not found"));
+      }
+
+      await redisClient.del(id);
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+// delete user -- only admin
+export const deleteUser = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+
+      const user = await UserModel.findById(id);
+
+      if (!user) {
+        return next(ErrorHandler.notFound("User not found"));
+      }
+
+      await user.deleteOne({ id });
+
+      await redisClient.del(id);
+
+      res.status(200).json({
+        success: true,
+        message: "User deleted successfully",
+      });
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);

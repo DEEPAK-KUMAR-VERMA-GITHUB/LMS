@@ -106,7 +106,7 @@ export const getSingleCourse = catchAsyncErrors(
         }
 
         // put course in redis
-        await redisClient.set(courseId, JSON.stringify(course));
+        await redisClient.set(courseId, JSON.stringify(course), "EX", 604800);
 
         res.status(200).json({
           success: true,
@@ -135,7 +135,12 @@ export const getAllCourses = catchAsyncErrors(
           "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
         );
 
-        await redisClient.set("allCourses", JSON.stringify(courses));
+        await redisClient.set(
+          "allCourses",
+          JSON.stringify(courses),
+          "EX",
+          604800
+        );
 
         res.status(200).json({
           success: true,
@@ -488,6 +493,7 @@ export const deleteCourse = catchAsyncErrors(
 
       res.status(200).json({
         success: true,
+
         message: "Course deleted successfully",
       });
     } catch (error: any) {

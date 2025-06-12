@@ -1,18 +1,24 @@
-import { FC } from "react";
+"use client";
 
-export const metadata = {
-  title: "LMS",
-  description: "LMS is a platform for learning and teaching",
-  icons: {
-    icon: "/favicon.ico",
-  },
-  keywords: ["LMS", "Learning", "Teaching", "Platform", "Education"],
-};
+import { FC, useState } from "react";
+import Header from "./components/Header";
+import Heading from "./utils/Heading";
 
-interface Props {}
+const HomePage: FC = () => {
+  const [open, setOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState(0);
 
-const HomePage: FC<Props> = () => {
-  return <div></div>;
+  return (
+    <div>
+      <Heading
+        title="LMS"
+        description="LMS is a platform for student to learn and get help from the peers."
+        keywords="Programming, MERN, Redux, Data Science, Machine Learning, Development"
+      />
+
+      <Header open={open} setOpen={setOpen} activeItem={activeItem} />
+    </div>
+  );
 };
 
 export default HomePage;

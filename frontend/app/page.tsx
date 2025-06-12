@@ -3,6 +3,8 @@
 import { FC, useState } from "react";
 import Header from "./components/Header";
 import Heading from "./utils/Heading";
+import Hero from "./components/Route/Hero";
+import Courses from "./components/Route/Courses";
 
 const HomePage: FC = () => {
   const [open, setOpen] = useState(false);
@@ -17,6 +19,9 @@ const HomePage: FC = () => {
       />
 
       <Header open={open} setOpen={setOpen} activeItem={activeItem} />
+
+      <Hero />
+      {/* <Courses /> */}
     </div>
   );
 };

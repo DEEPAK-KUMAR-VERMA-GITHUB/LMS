@@ -11,8 +11,8 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
 import toast from "react-hot-toast";
-// import { useLoginMutation } from "@/redux/features/auth/authApi";
-// import { signIn } from "next-auth/react";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { signIn } from "next-auth/react";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -30,29 +30,29 @@ const schema = Yup.object().shape({
 });
 
 const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
-  //   const [login, { error, isSuccess }] = useLoginMutation();
+  const [login, { error, isSuccess, isLoading }] = useLoginMutation();
 
   const [show, setShow] = useState(false);
 
-  //   useEffect(() => {
-  //     if (isSuccess) {
-  //       setOpen(false);
-  //       toast.success("Login Successfully!");
-  //       refetch();
-  //     }
-  //     if (error) {
-  //       if ("data" in error) {
-  //         const errorData = error as any;
-  //         toast.error(errorData.data.message);
-  //       }
-  //     }
-  //   }, [isSuccess, error]);
+  useEffect(() => {
+    if (isSuccess) {
+      setOpen(false);
+      toast.success("Login Successfully!");
+      refetch();
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: schema,
     onSubmit: async ({ email, password }) => {
-      //   await login({ email, password });
+      await login({ email, password });
       console.log(email, password);
     },
   });
@@ -117,7 +117,12 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
         </div>
 
         <div className="w-full mt-5">
-          <input type="submit" value="Login" className={`${styles.button}`} />
+          <input
+            type="submit"
+            value={isLoading ? "Loading..." : "Login"}
+            className={`${styles.button}`}
+            disabled={isLoading}
+          />
         </div>
 
         <br />
@@ -129,12 +134,12 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
           <FcGoogle
             size={30}
             className="cursor-pointer mr-2"
-            // onClick={() => signIn("google")}
+            onClick={() => signIn("google")}
           />
           <AiFillGithub
             size={30}
             className="cursor-pointer ml-2"
-            // onClick={() => signIn("github")}
+            onClick={() => signIn("github")}
           />
         </div>
         <h5 className="text-center pt-4 font-Poppins text-[14px]  text-black dark:text-white ">

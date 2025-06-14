@@ -1,4 +1,4 @@
-// import { useActivationMutation } from "@/redux/features/auth/authApi";
+import { useActivationMutation } from "@/redux/features/auth/authApi";
 import { styles } from "../../../app/styles/style";
 import React, { FC, useState, useRef, useEffect } from "react";
 import { toast } from "react-hot-toast";
@@ -17,25 +17,24 @@ type VerifyNumber = {
 };
 
 const Verification: FC<Props> = ({ setRoute }) => {
-//   const { token } = useSelector((state: any) => state.auth);
-//   const [activation, { isSuccess, error, data, isLoading }] =
-//     useActivationMutation();
+  const { token } = useSelector((state: any) => state.auth);
+  const [activation, { isSuccess, error, isLoading }] = useActivationMutation();
 
-//   useEffect(() => {
-//     if (isSuccess) {
-//       toast.success("Account activated successfully");
-//       setRoute("Login");
-//     }
-//     if (error) {
-//       if ("data" in error) {
-//         const errorData = error as any;
-//         toast.error(errorData.data.message);
-//         setInvalidError(true);
-//       } else {
-//         console.log("An error occured", error);
-//       }
-//     }
-//   }, [isSuccess, error]);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Account activated successfully");
+      setRoute("Login");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+        setInvalidError(true);
+      } else {
+        console.log("An error occured", error);
+      }
+    }
+  }, [isSuccess, error]);
 
   const [invalidError, setInvalidError] = useState<boolean>(false);
   const inputRefs = [
@@ -58,11 +57,11 @@ const Verification: FC<Props> = ({ setRoute }) => {
       setInvalidError(true);
       return;
     }
-    // console.log(token)
-    // await activation({
-    //   activation_token: token,
-    //   activation_code: verificationNumber,
-    // });
+    console.log(token);
+    await activation({
+      activation_token: token,
+      activation_code: verificationNumber,
+    });
   };
 
   const handleInputChange = (index: number, value: string) => {
@@ -115,8 +114,12 @@ const Verification: FC<Props> = ({ setRoute }) => {
       <br />
       <br />
       <div className="w-full flex justify-center">
-        <button className={styles.button} onClick={varificationHandler}>
-          Verify OTP
+        <button
+          className={styles.button}
+          onClick={varificationHandler}
+          disabled={isLoading}
+        >
+          {isLoading ? "Verifing" : "Verify OTP"}
         </button>
       </div>
 

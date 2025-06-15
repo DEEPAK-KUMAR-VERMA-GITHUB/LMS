@@ -8,6 +8,7 @@ import { Providers } from "./Provider";
 import { SessionProvider } from "next-auth/react";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Loader from "./components/Loader/Loader";
+import { useEffect } from "react";
 // import { useEffect } from "react";
 // import socketIO from "socket.io-client";
 // const socketId = socketIO(
@@ -53,7 +54,15 @@ export default function RootLayout({
 }
 
 const Custom: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isLoading } = useLoadUserQuery({});
+  const { isLoading, refetch } = useLoadUserQuery({}, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true
+  });
+
+  useEffect(() => {
+    // Refetch user data when the component mounts
+    refetch();
+  }, []);
 
   // make socket connection and handle error
   // useEffect(() => {

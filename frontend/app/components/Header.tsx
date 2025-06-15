@@ -40,7 +40,11 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
     data: userData,
     isLoading,
     refetch,
-  } = useLoadUserQuery(undefined, { refetchOnMountOrArgChange: true });
+  } = useLoadUserQuery(undefined, { 
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true
+  });
 
   useEffect(() => {
     if (!isLoading && !userData && data) {
@@ -50,16 +54,16 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
         avatar: data?.user?.image,
       });
       refetch();
-      toast.success("Login Successfully");
     }
 
     if (!data && isSuccess) {
+      refetch();
       toast.success("Login Successfully");
     }
     if (!data && !isLoading && !userData) {
       setLogout(true);
     }
-  }, [data, userData, isLoading]);
+  }, [data, userData, isLoading, isSuccess]);
 
   // useEffect(() => {
   //   // Add event listener when the component is mounted

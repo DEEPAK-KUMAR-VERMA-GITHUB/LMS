@@ -18,10 +18,12 @@ type Props = {
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const [name, setName] = useState<string>(user && user.name);
   const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
-  const [loadUser, setLoadUser] = useState<boolean>(false);
-  const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
   const [editProfile, { isSuccess: nameUpdated, error: nameError }] =
     useEditProfileMutation();
+  const { refetch } = useLoadUserQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true
+  });
 
   const imageHandler = async (e: any) => {
     const fileReader = new FileReader();
@@ -43,13 +45,14 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success("Profile image updated.");
-      setLoadUser(true);
-    }
-    if (nameUpdated) {
-      toast.success("Profile updated successfully.");
-      setLoadUser(true);
+    if (isSuccess || nameUpdated) {
+      refetch();
+      if (isSuccess) {
+        toast.success("Profile image updated.");
+      }
+      if (nameUpdated) {
+        toast.success("Profile updated successfully.");
+      }
     }
     if (error) {
       if ("data" in error) {

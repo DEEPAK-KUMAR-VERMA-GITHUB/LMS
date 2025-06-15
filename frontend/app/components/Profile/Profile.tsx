@@ -29,7 +29,7 @@ const Profile: FC<Props> = ({ user }) => {
   const logoutHandler = async () => {
     setLogout(true);
     await signOut();
-    toast.success("Logout Successfully")
+    toast.success("Logout Successfully");
   };
 
   if (typeof window !== "undefined") {

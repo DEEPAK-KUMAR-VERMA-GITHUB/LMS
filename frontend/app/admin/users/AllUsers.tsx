@@ -22,7 +22,11 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
   const { theme, setTheme } = useTheme();
   const { data, isLoading, refetch } = useGetAllUsersQuery(
     {},
-    { refetchOnMountOrArgChange: true }
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+      refetchOnReconnect: true,
+    }
   );
 
   const [email, setEmail] = useState("");
@@ -347,24 +351,26 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box 
+              <Box
                 className={`absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-5 flex flex-col p-8 rounded-lg shadow-2xl backdrop-blur-sm ${
-                  theme === "dark" 
-                    ? "bg-[#111c43] border border-[#1f2547]" 
+                  theme === "dark"
+                    ? "bg-[#111c43] border border-[#1f2547]"
                     : "bg-white border border-gray-200"
                 }`}
                 sx={{
                   width: {
-                    xs: '90%',
-                    sm: '400px',
-                    md: '450px'
+                    xs: "90%",
+                    sm: "400px",
+                    md: "450px",
                   },
-                  maxWidth: '450px'
+                  maxWidth: "450px",
                 }}
               >
-                <h1 className={`${styles.title} text-center mb-6 ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}>
+                <h1
+                  className={`${styles.title} text-center mb-6 ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
                   Add New Member
                 </h1>
                 <form
@@ -377,8 +383,8 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
                       inputMode="email"
                       placeholder="User Email"
                       className={`${styles.input} w-full ${
-                        theme === "dark" 
-                          ? "bg-[#1a1f3c] text-white placeholder-gray-400" 
+                        theme === "dark"
+                          ? "bg-[#1a1f3c] text-white placeholder-gray-400"
                           : "bg-gray-50 text-gray-900 placeholder-gray-500"
                       }`}
                       value={email}
@@ -388,7 +394,9 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
                   </div>
                   <div className="relative">
                     <select
-                      className={`${styles.input} w-full appearance-none cursor-pointer transition-all duration-300 ${
+                      className={`${
+                        styles.input
+                      } w-full appearance-none cursor-pointer transition-all duration-300 ${
                         theme === "dark"
                           ? "bg-[#1a1f3c] text-white hover:bg-[#1f2547]"
                           : "bg-gray-50 text-gray-900 hover:bg-gray-100"
@@ -399,29 +407,35 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
                         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='${
                           theme === "dark" ? "%234a90e2" : "%232563eb"
                         }' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'right 1rem center',
-                        backgroundSize: '1.2em',
-                        paddingRight: '2.5rem'
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "right 1rem center",
+                        backgroundSize: "1.2em",
+                        paddingRight: "2.5rem",
                       }}
                     >
-                      <option 
-                        value="admin" 
-                        className={`py-2 ${theme === "dark" ? "bg-[#1a1f3c]" : "bg-white"}`}
+                      <option
+                        value="admin"
+                        className={`py-2 ${
+                          theme === "dark" ? "bg-[#1a1f3c]" : "bg-white"
+                        }`}
                       >
                         Admin
                       </option>
-                      <option 
-                        value="user" 
-                        className={`py-2 ${theme === "dark" ? "bg-[#1a1f3c]" : "bg-white"}`}
+                      <option
+                        value="user"
+                        className={`py-2 ${
+                          theme === "dark" ? "bg-[#1a1f3c]" : "bg-white"
+                        }`}
                       >
                         User
                       </option>
                     </select>
                   </div>
-                  <button 
-                    type="submit" 
-                    className={`${styles.button} mt-2 w-full py-3 text-base font-medium transition-all duration-300 ${
+                  <button
+                    type="submit"
+                    className={`${
+                      styles.button
+                    } mt-2 w-full py-3 text-base font-medium transition-all duration-300 ${
                       theme === "dark"
                         ? "bg-[#4a90e2] hover:bg-[#357abd]"
                         : "bg-[#2563eb] hover:bg-[#1d4ed8]"
@@ -441,29 +455,33 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box 
+              <Box
                 className={`absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-5 p-8 rounded-lg shadow-2xl backdrop-blur-sm ${
-                  theme === "dark" 
-                    ? "bg-[#111c43] border border-[#1f2547]" 
+                  theme === "dark"
+                    ? "bg-[#111c43] border border-[#1f2547]"
                     : "bg-white border border-gray-200"
                 }`}
                 sx={{
                   width: {
-                    xs: '90%',
-                    sm: '400px',
-                    md: '450px'
+                    xs: "90%",
+                    sm: "400px",
+                    md: "450px",
                   },
-                  maxWidth: '450px'
+                  maxWidth: "450px",
                 }}
               >
-                <h1 className={`${styles.title} text-center mb-6 ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}>
+                <h1
+                  className={`${styles.title} text-center mb-6 ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
                   Are you sure to delete this user?
                 </h1>
                 <div className="flex w-full items-center justify-between gap-4 mt-6">
                   <button
-                    className={`${styles.button} !w-[120px] h-[40px] transition-all duration-300 ${
+                    className={`${
+                      styles.button
+                    } !w-[120px] h-[40px] transition-all duration-300 ${
                       theme === "dark"
                         ? "bg-gray-700 hover:bg-gray-600"
                         : "bg-gray-200 hover:bg-gray-300"
@@ -473,7 +491,9 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
                     Cancel
                   </button>
                   <button
-                    className={`${styles.button} !w-[120px] h-[40px] transition-all duration-300 ${
+                    className={`${
+                      styles.button
+                    } !w-[120px] h-[40px] transition-all duration-300 ${
                       theme === "dark"
                         ? "bg-red-600 hover:bg-red-700"
                         : "bg-red-500 hover:bg-red-600"

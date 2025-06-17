@@ -38,8 +38,14 @@ const AllCourses: FC = () => {
       flex: 0.2,
       renderCell: (params: any) => (
         <>
-          <Link href={`/admin/edit-course/${params.row.id}`} className="flex items-center justify-center h-full">
-            <FiEdit2 className="dark:text-white text-black hover:text-blue-800 " size={20} />
+          <Link
+            href={`/admin/edit-course/${params.row.id}`}
+            className="flex items-center justify-center h-full"
+          >
+            <FiEdit2
+              className="dark:text-white text-black hover:text-blue-800 "
+              size={20}
+            />
           </Link>
         </>
       ),
@@ -56,7 +62,10 @@ const AllCourses: FC = () => {
               setCourseId(params.row.id);
             }}
           >
-            <AiOutlineDelete className="text-red-900 hover:text-red-700 transition" size={20} />
+            <AiOutlineDelete
+              className="text-red-900 hover:text-red-700 transition"
+              size={20}
+            />
           </Button>
         </>
       ),
@@ -124,9 +133,10 @@ const AllCourses: FC = () => {
                 border: "none",
                 outline: "none",
                 borderRadius: "8px",
-                boxShadow: theme === "dark" 
-                  ? "0 4px 20px rgba(0, 0, 0, 0.3)" 
-                  : "0 4px 20px rgba(0, 0, 0, 0.08)",
+                boxShadow:
+                  theme === "dark"
+                    ? "0 4px 20px rgba(0, 0, 0, 0.3)"
+                    : "0 4px 20px rgba(0, 0, 0, 0.08)",
               },
               "& .css-1iyq7zh-MuiDataGrid-columnHeaders": {
                 color: theme === "dark" ? "#fff" : "#1a1a1a",
@@ -145,19 +155,22 @@ const AllCourses: FC = () => {
                 display: "flex",
                 alignItems: "center",
                 "&:hover": {
-                  backgroundColor: theme === "dark" 
-                    ? "rgba(74, 144, 226, 0.5)" 
-                    : "rgba(37, 99, 235, 0.04)",
+                  backgroundColor:
+                    theme === "dark"
+                      ? "rgba(74, 144, 226, 0.5)"
+                      : "rgba(37, 99, 235, 0.04)",
                   transform: "translateY(-1px)",
                 },
                 "&.Mui-selected": {
-                  backgroundColor: theme === "dark" 
-                    ? "rgba(74, 144, 226, 0.12)" 
-                    : "rgba(37, 99, 235, 0.08)",
+                  backgroundColor:
+                    theme === "dark"
+                      ? "rgba(74, 144, 226, 0.12)"
+                      : "rgba(37, 99, 235, 0.08)",
                   "&:hover": {
-                    backgroundColor: theme === "dark" 
-                      ? "rgba(74, 144, 226, 0.15)" 
-                      : "rgba(37, 99, 235, 0.12)",
+                    backgroundColor:
+                      theme === "dark"
+                        ? "rgba(74, 144, 226, 0.15)"
+                        : "rgba(37, 99, 235, 0.12)",
                   },
                 },
               },
@@ -177,13 +190,15 @@ const AllCourses: FC = () => {
                 fontWeight: 500,
               },
               "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: theme === "dark" 
-                  ? "rgba(26, 31, 46, 0.95)" 
-                  : "rgba(248, 249, 250, 0.95)",
+                backgroundColor:
+                  theme === "dark"
+                    ? "rgba(26, 31, 46, 0.95)"
+                    : "rgba(248, 249, 250, 0.95)",
                 backdropFilter: "blur(8px)",
-                borderBottom: theme === "dark" 
-                  ? "1px solid rgba(74, 144, 226, 0.2)" 
-                  : "1px solid rgba(37, 99, 235, 0.1)",
+                borderBottom:
+                  theme === "dark"
+                    ? "1px solid rgba(74, 144, 226, 0.2)"
+                    : "1px solid rgba(37, 99, 235, 0.1)",
                 "& .MuiDataGrid-columnHeader": {
                   display: "flex",
                   alignItems: "center",
@@ -191,19 +206,22 @@ const AllCourses: FC = () => {
                 },
               },
               "& .MuiDataGrid-virtualScroller": {
-                backgroundColor: theme === "dark" 
-                  ? "rgba(26, 31, 46, 0.95)" 
-                  : "rgba(255, 255, 255, 0.95)",
+                backgroundColor:
+                  theme === "dark"
+                    ? "rgba(26, 31, 46, 0.95)"
+                    : "rgba(255, 255, 255, 0.95)",
                 backdropFilter: "blur(8px)",
               },
               "& .MuiDataGrid-footerContainer": {
                 color: theme === "dark" ? "#e0e0e0" : "#2c2c2c",
-                borderTop: theme === "dark" 
-                  ? "1px solid rgba(74, 144, 226, 0.2)" 
-                  : "1px solid rgba(37, 99, 235, 0.1)",
-                backgroundColor: theme === "dark" 
-                  ? "rgba(26, 31, 46, 0.98)" 
-                  : "rgba(248, 249, 250, 0.95)",
+                borderTop:
+                  theme === "dark"
+                    ? "1px solid rgba(74, 144, 226, 0.2)"
+                    : "1px solid rgba(37, 99, 235, 0.1)",
+                backgroundColor:
+                  theme === "dark"
+                    ? "rgba(26, 31, 46, 0.98)"
+                    : "rgba(248, 249, 250, 0.95)",
                 backdropFilter: "blur(8px)",
                 padding: "8px 16px",
                 "& .MuiTablePagination-root": {
@@ -221,38 +239,46 @@ const AllCourses: FC = () => {
                     "& .MuiIconButton-root": {
                       color: theme === "dark" ? "#4a90e2" : "#2563eb",
                       "&:hover": {
-                        backgroundColor: theme === "dark" 
-                          ? "rgba(74, 144, 226, 0.08)" 
-                          : "rgba(37, 99, 235, 0.04)",
+                        backgroundColor:
+                          theme === "dark"
+                            ? "rgba(74, 144, 226, 0.08)"
+                            : "rgba(37, 99, 235, 0.04)",
                       },
                       "&.Mui-disabled": {
-                        color: theme === "dark" ? "rgba(74, 144, 226, 0.3)" : "rgba(37, 99, 235, 0.3)",
+                        color:
+                          theme === "dark"
+                            ? "rgba(74, 144, 226, 0.3)"
+                            : "rgba(37, 99, 235, 0.3)",
                       },
                     },
                   },
                 },
               },
               "& .MuiCheckbox-root": {
-                color: theme === "dark" 
-                  ? "rgba(74, 144, 226, 0.7) !important" 
-                  : "rgba(37, 99, 235, 0.7) !important",
+                color:
+                  theme === "dark"
+                    ? "rgba(74, 144, 226, 0.7) !important"
+                    : "rgba(37, 99, 235, 0.7) !important",
                 "&.Mui-checked": {
-                  color: theme === "dark" 
-                    ? "#4a90e2 !important" 
-                    : "#2563eb !important",
+                  color:
+                    theme === "dark"
+                      ? "#4a90e2 !important"
+                      : "#2563eb !important",
                 },
               },
               "& .MuiDataGrid-toolbarContainer": {
                 padding: "16px",
                 "& .MuiButton-text": {
-                  color: theme === "dark" 
-                    ? "rgba(74, 144, 226, 0.9) !important" 
-                    : "rgba(37, 99, 235, 0.9) !important",
+                  color:
+                    theme === "dark"
+                      ? "rgba(74, 144, 226, 0.9) !important"
+                      : "rgba(37, 99, 235, 0.9) !important",
                   fontWeight: 500,
                   "&:hover": {
-                    backgroundColor: theme === "dark" 
-                      ? "rgba(74, 144, 226, 0.08)" 
-                      : "rgba(37, 99, 235, 0.04)",
+                    backgroundColor:
+                      theme === "dark"
+                        ? "rgba(74, 144, 226, 0.08)"
+                        : "rgba(37, 99, 235, 0.04)",
                   },
                 },
               },

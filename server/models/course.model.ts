@@ -49,6 +49,7 @@ interface ICourse extends Document {
   };
   tags: string;
   level: string;
+  category: string;
   demoUrl: string;
   benefits: { title: string }[];
   prerequisites: { title: string }[];

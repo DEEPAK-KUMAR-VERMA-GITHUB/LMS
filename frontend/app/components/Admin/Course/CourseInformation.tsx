@@ -24,7 +24,6 @@ const CourseInformation: FC<Props> = ({
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setCategories(data?.layout?.categories);
     }
 
@@ -83,7 +82,7 @@ const CourseInformation: FC<Props> = ({
   };
 
   return (
-    <div className="w-[80%] m-auto mt-24">
+    <div className="w-[80%] m-auto mt-24 mb-20">
       <form onSubmit={handleSubmit}>
         <div className="mb-5">
           <label htmlFor="name" className={styles.label}>
@@ -179,7 +178,11 @@ const CourseInformation: FC<Props> = ({
                 Select Category
               </option>
               {categories.map((category: any) => (
-                <option value={category.title} key={category._id}>
+                <option
+                  value={category.title}
+                  key={category._id}
+                  className=" text-black dark:text-white dark:bg-blue-900 "
+                >
                   {category.title}
                 </option>
               ))}
@@ -226,7 +229,7 @@ const CourseInformation: FC<Props> = ({
             name="thumbnail"
             className="hidden"
             onChange={handleChange}
-            required
+            required={!courseInfo?.thumbnail}
           />
           <label
             htmlFor="file"

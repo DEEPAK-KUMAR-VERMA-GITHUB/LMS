@@ -119,7 +119,7 @@ export const editLayout = catchAsyncErrors(
 export const getLayoutByType = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { type } = req.body;
+      const { type } = req.params;
 
       const layout = await Layout.findOne({ type });
 

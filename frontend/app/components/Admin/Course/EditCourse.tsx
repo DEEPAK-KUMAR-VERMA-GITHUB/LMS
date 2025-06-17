@@ -8,6 +8,7 @@ import CourseContent from "./CourseContent";
 import CoursePreview from "./CoursePreview";
 import {
   useEditCourseMutation,
+  useGetAllCoursesQuery,
   useGetCourseQuery,
 } from "@/redux/features/courses/courseApi";
 import toast from "react-hot-toast";
@@ -19,11 +20,18 @@ type Props = {
 };
 
 const EditCourse: FC<Props> = ({ id }) => {
-  const { isLoading, data, error, refetch, isSuccess } = useGetCourseQuery(id, {
-    refetchOnMountOrArgChange: true,
-    refetchOnFocus: true,
-    refetchOnReconnect: true,
-  });
+  const {
+    isLoading,
+    data: allCoursesData,
+    error,
+    refetch,
+    isSuccess,
+  } = useGetAllCoursesQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const [
     editCourse,
@@ -32,7 +40,8 @@ const EditCourse: FC<Props> = ({ id }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(data);
+      const data = allCoursesData?.courses.find((i: any) => i._id === id);
+
       const {
         name,
         description,
@@ -42,7 +51,7 @@ const EditCourse: FC<Props> = ({ id }) => {
         level,
         demoUrl,
         thumbnail,
-      } = data.course;
+      } = data;
       setCourseInfo({
         name,
         description,
@@ -64,7 +73,7 @@ const EditCourse: FC<Props> = ({ id }) => {
         toast.error(errMsg.data.message);
       }
     }
-  }, [data, error, isSuccess]);
+  }, [allCoursesData, error, isSuccess]);
 
   const [active, setActive] = useState(0);
   const [courseInfo, setCourseInfo] = useState({
@@ -139,8 +148,7 @@ const EditCourse: FC<Props> = ({ id }) => {
     setCourseData(data);
   };
 
-  const handleCourseCreate = async (e: any) => {
-    e.preventDefault();
+  const handleEditCourse = async () => {
     const data = courseData;
     await editCourse({ id, data });
   };
@@ -207,7 +215,7 @@ const EditCourse: FC<Props> = ({ id }) => {
             active={active}
             setActive={setActive}
             courseData={courseData}
-            handleCourseCreate={handleCourseCreate}
+            handleCourseCreate={handleEditCourse}
             isEdit={true}
           />
         )}

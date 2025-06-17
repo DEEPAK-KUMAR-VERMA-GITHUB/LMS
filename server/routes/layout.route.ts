@@ -25,6 +25,6 @@ layoutRoutes.put(
   editLayout
 );
 
-layoutRoutes.get("/get-layout", getLayoutByType);
+layoutRoutes.get("/get-layout/:type", getLayoutByType);
 
 export default layoutRoutes;

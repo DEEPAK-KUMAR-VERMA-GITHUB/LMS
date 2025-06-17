@@ -55,7 +55,7 @@ export const editCourse = catchAsyncErrors(
 
       const thumbnail = data?.thumbnail;
 
-      if (thumbnail) {
+      if (thumbnail && !thumbnail.startsWith("https")) {
         if (course?.thumbnail?.public_id) {
           await removeImage(course.thumbnail.public_id);
         }

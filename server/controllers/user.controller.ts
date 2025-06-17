@@ -208,8 +208,6 @@ export const updateAccessToken = catchAsyncErrors(
         );
       }
 
-      const message = "Cookie has been refreshed";
-
       const session = await redisClient.get(decoded.id as string);
       if (!session) {
         return next(new ErrorHandler("Session expired", 400));
@@ -235,13 +233,9 @@ export const updateAccessToken = catchAsyncErrors(
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
-      req.user = user;
+      await redisClient.set(user._id, JSON.stringify(user), "EX", 604800);
 
-      res.status(200).json({
-        success: true,
-        message,
-        accessToken,
-      });
+      next();
     } catch (error: any) {
       return next(ErrorHandler.serverError(error.message));
     }

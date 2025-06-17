@@ -9,6 +9,7 @@ import path from "path";
 import ejs from "ejs";
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
+import axios from "axios";
 
 // upload course
 export const uploadCourse = catchAsyncErrors(
@@ -28,6 +29,9 @@ export const uploadCourse = catchAsyncErrors(
       }
 
       const course = await CourseModel.create(data);
+
+      // clear courses from redis
+      await redisClient.del("allCourses");
 
       res.status(201).json({
         success: true,
@@ -69,6 +73,9 @@ export const editCourse = catchAsyncErrors(
         { $set: data },
         { new: true }
       );
+
+      // clear all courses from redis
+      await redisClient.del("allCourses");
 
       res.status(201).json({
         success: true,
@@ -496,6 +503,31 @@ export const deleteCourse = catchAsyncErrors(
 
         message: "Course deleted successfully",
       });
+    } catch (error: any) {
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+// GENERATE VIDEO URL
+export const generateVideoUrl = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { videoId } = req.body;
+
+      const response = await axios.post(
+        `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
+        { ttl: 300 },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
+          },
+        }
+      );
+
+      res.status(200).json(response.data);
     } catch (error: any) {
       return next(ErrorHandler.serverError(error.message));
     }

@@ -5,23 +5,27 @@ import {
   getOrdersAnalytics,
   getUserAnalytics,
 } from "../controllers/analytics.controller";
+import { updateAccessToken } from "../controllers/user.controller";
 
 const analyticsRoutes = express.Router();
 
 analyticsRoutes.get(
-  "/get-user-analytics",
+  "/get-users-analytics",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   getUserAnalytics
 );
 analyticsRoutes.get(
   "/get-courses-analytics",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   getCoursesAnalytics
 );
 analyticsRoutes.get(
   "/get-orders-analytics",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   getOrdersAnalytics

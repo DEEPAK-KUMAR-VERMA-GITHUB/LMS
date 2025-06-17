@@ -23,7 +23,7 @@ const Profile: FC<Props> = ({ user }) => {
     skip: !logout ? true : false,
   });
 
-  const { data, isLoading } = useGetCourseQuery(undefined, {});
+  // const { data, isLoading } = useGetCourseQuery(undefined, {});
   const [courses, setCourses] = useState<any[]>([]);
 
   const logoutHandler = async () => {
@@ -39,11 +39,11 @@ const Profile: FC<Props> = ({ user }) => {
     });
   }
 
-  useEffect(() => {
-    if (!isLoading && data) {
-      setCourses(data.courses.filter((course: any) => course._id === user._id));
-    }
-  }, [data, user._id]);
+  // useEffect(() => {
+  //   if (!isLoading && data) {
+  //     setCourses(data.courses.filter((course: any) => course._id === user._id));
+  //   }
+  // }, [data, user._id]);
 
   return (
     <div className="w-[85%] flex mx-auto">

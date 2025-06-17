@@ -22,7 +22,8 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     useEditProfileMutation();
   const { refetch } = useLoadUserQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    refetchOnFocus: true
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
   });
 
   const imageHandler = async (e: any) => {
@@ -58,13 +59,13 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       if ("data" in error) {
         const errMsg = error as any;
         toast.error(errMsg?.data?.message);
-      } 
+      }
     }
     if (nameError) {
       if ("data" in nameError) {
         const errMsg = nameError as any;
         toast.error(errMsg?.data?.message);
-      } 
+      }
     }
   }, [isSuccess, error, nameUpdated, nameError]);
 

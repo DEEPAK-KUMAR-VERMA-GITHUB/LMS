@@ -54,10 +54,14 @@ export default function RootLayout({
 }
 
 const Custom: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isLoading, refetch } = useLoadUserQuery({}, {
-    refetchOnMountOrArgChange: true,
-    refetchOnFocus: true
-  });
+  const { isLoading, refetch } = useLoadUserQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+      refetchOnReconnect: true,
+    }
+  );
 
   useEffect(() => {
     // Refetch user data when the component mounts

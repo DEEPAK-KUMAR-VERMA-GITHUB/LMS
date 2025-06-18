@@ -22,7 +22,7 @@ const CreateCourse: FC = () => {
     price: "",
     estimatedPrice: "",
     tags: "",
-    lavel: "",
+    level: "",
     demoUrl: "",
     thumbnail: "",
   });
@@ -79,7 +79,7 @@ const CreateCourse: FC = () => {
       price: courseInfo.price,
       estimatedPrice: courseInfo.estimatedPrice,
       tags: courseInfo.tags,
-      lavel: courseInfo.lavel,
+      level: courseInfo.level,
       demoUrl: courseInfo.demoUrl,
       thumbnail: courseInfo.thumbnail,
       totalVideos: courseContentData.length,

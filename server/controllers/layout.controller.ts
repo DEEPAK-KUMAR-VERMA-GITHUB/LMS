@@ -3,6 +3,7 @@ import ErrorHandler from "../utils/ErrorHandler";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import Layout from "../models/layout.model";
 import { removeImage, uploadImage } from "../utils/cloudinary";
+import redisClient from "../db/redis";
 
 // create layout
 export const createLayout = catchAsyncErrors(
@@ -44,6 +45,9 @@ export const createLayout = catchAsyncErrors(
         await new Layout({ type: "Categories", categories }).save();
       }
 
+      // clear redis cache
+      await redisClient.del(`layout-${type}`);
+
       res.status(201).json({
         success: true,
         message: "Layout created successfully",
@@ -71,20 +75,28 @@ export const editLayout = catchAsyncErrors(
         const { image, title, subTitle } = req.body;
 
         // if already a banner image then remove it first
-        if (layoutExists.banner.image.public_id) {
+        if (!image.startsWith("https") && layoutExists.banner.image.public_id) {
           await removeImage(layoutExists.banner.image.public_id as string);
         }
 
-        const { public_id, url } = await uploadImage(image, "layout");
-
-        const banner = {
-          image: {
-            public_id,
-            url,
-          },
-          title,
-          subTitle,
-        };
+        let banner;
+        if (!image.startsWith("https")) {
+          const { public_id, url } = await uploadImage(image, "layout");
+          banner = {
+            image: {
+              public_id,
+              url,
+            },
+            title,
+            subTitle,
+          };
+        } else {
+          banner = {
+            image: layoutExists.banner.image,
+            title,
+            subTitle,
+          };
+        }
 
         await Layout.findByIdAndUpdate(layoutExists._id, {
           banner,
@@ -105,6 +117,9 @@ export const editLayout = catchAsyncErrors(
         });
       }
 
+      // clear redis cache
+      await redisClient.del(`layout-${type}`);
+
       res.status(200).json({
         success: true,
         message: "Layout updated successfully",
@@ -121,11 +136,23 @@ export const getLayoutByType = catchAsyncErrors(
     try {
       const { type } = req.params;
 
+      // if cache available in redis
+      const layoutCache = await redisClient.get(`layout-${type}`);
+      if (layoutCache) {
+        return res.status(200).json({
+          success: true,
+          layout: JSON.parse(layoutCache),
+        });
+      }
+
       const layout = await Layout.findOne({ type });
 
       if (!layout) {
         return next(ErrorHandler.notFound(`${type} layout does not exist`));
       }
+
+      // store in redis
+      await redisClient.set(`layout-${type}`, JSON.stringify(layout));
 
       res.status(200).json({
         success: true,

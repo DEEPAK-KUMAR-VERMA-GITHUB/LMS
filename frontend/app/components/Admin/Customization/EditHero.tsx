@@ -7,6 +7,7 @@ import Loader from "../../Loader/Loader";
 import toast from "react-hot-toast";
 import { AiOutlineCamera } from "react-icons/ai";
 import { styles } from "@/app/styles/style";
+import Image from "next/image";
 
 type Props = {};
 
@@ -32,13 +33,13 @@ const EditHero: FC<Props> = () => {
       if ("data" in error) {
         const errMsg = error as any;
         toast.error(errMsg.data.message);
-      } 
+      }
     }
     if (editError) {
       if ("data" in editError) {
         const errMsg = editError as any;
         toast.error(errMsg.data.message);
-      } 
+      }
     }
     if (isSuccess) {
       refetch();
@@ -71,15 +72,16 @@ const EditHero: FC<Props> = () => {
   if (isLoading) return <Loader />;
 
   return (
-    // <div className="w-[90%] 800px:w-[80%] m-auto mt-[120px] ">
-    <div className="w-full 1000px:flex items-center">
-      <div className="absolute top-[100px] 1000px:top-[unset] 1500px:h-[700px] 1500px:w-[700px] 1100px:h-[600px] 1100px:w-[600px] h-[50vh] w-[50vh] hero_animation rounded-[50%] 1100px:left-[18rem] 1500px:left-[21rem] "></div>
-      <div className=" 1000px:w-[40%] flex 1000px:min-h-screen items-center justify-end pt-[70px] 1000px:pt-0 z-10 ">
+    <div className="w-full lg:flex items-center">
+      <div className="absolute top-[100px] lg:top-[unset] 2xl:h-[700px] 2xl:w-[700px] xl:h-[600px] xl:w-[600px] h-[50vh] w-[50vh] hero_animation rounded-[50%] xl:left-[18rem] 2xl:left-[21rem] "></div>
+      <div className=" lg:w-[40%] flex lg:min-h-screen items-center justify-end pt-[70px] lg:pt-0 z-10 ">
         <div className="relative flex items-center justify-end">
-          <img
+          <Image
             src={image}
             alt="banner"
-            className="object-contain 1100px:max-w-[90%] w-[90%] 1500px:max-w-[85%] h-auto z-10 "
+            width={1000}
+            height={1000}
+            className="object-contain xl:max-w-[90%] w-[90%] 2xl:max-w-[85%] h-auto z-10"
           />
           <input
             type="file"
@@ -89,19 +91,25 @@ const EditHero: FC<Props> = () => {
             className="hidden"
           />
 
-          <label htmlFor="banner" className="absolute bottom-0 right-0 z-20">
-            <AiOutlineCamera className="dark:text-white text-black text-[18px] cursor-pointer" />
+          <label
+            htmlFor="banner"
+            className="absolute -bottom-25 right-10 z-20 hover:bg-blue-200 cursor-pointer p-3 rounded-2xl "
+          >
+            <AiOutlineCamera
+              size={30}
+              className="dark:text-white text-gray-500 text-[18px]  "
+            />
           </label>
         </div>
       </div>
-      <div className=" 1000px:w-[60%] flex flex-col items-center 1000px:mt-0 text-center 1000px:text-left mt-[150px] ">
+      <div className=" lg:w-[60%] flex flex-col lg:mt-0 text-center lg:text-left mt-[150px] ">
         <textarea
           cols={30}
           rows={4}
           placeholder="Improve Your Online Learning Experience Better Instantly"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="dark:text-white text-[#000000c7] text-[30px] resize-none px-3 w-full 1000px:text-[60px] 1500px:text-[70px] font-[600] font-Poppins mb-2 bg-transparent"
+          className="dark:text-white text-[#000000c7] text-[30px] resize-none px-3 w-full lg:text-[60px] 2xl:text-[70px] font-[600] font-Poppins mb-2 bg-transparent focus:outline-0 "
         ></textarea>
         <textarea
           cols={30}
@@ -109,7 +117,7 @@ const EditHero: FC<Props> = () => {
           placeholder="We have 40k+ Online Courses & 500k+ Online registered students. Find your desired courses here..."
           value={subTitle}
           onChange={(e) => setSubTitle(e.target.value)}
-          className="dark:text-[#edfff4] text-[#000000ac] text-[18px] resize-none px-3 w-full 1100px:!w-[74%] 1500px:!w-[55%] font-[600] font-Josefin mb-6 bg-transparent"
+          className="dark:text-[#edfff4] text-[#000000ac] text-[18px] resize-none px-3 w-full xl:!w-[74%] 2xl:!w-[55%] font-[600] font-Josefin mb-6 bg-transparent focus:outline-0"
         ></textarea>
 
         <div

@@ -1,23 +1,73 @@
 "use client";
 
-import React, { FC, useState, useEffect } from "react";
-import CourseInformation from "./CourseInformation";
-import CourseOptions from "./CourseOptions";
-import CourseData from "./CourseData";
-import CourseContent from "./CourseContent";
-import CoursePreview from "./CoursePreview";
 import {
   useEditCourseMutation,
   useGetAllCoursesQuery,
-  useGetCourseQuery,
 } from "@/redux/features/courses/courseApi";
-import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
+import { FC, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Loader from "../../Loader/Loader";
+import CourseContent from "./CourseContent";
+import CourseData from "./CourseData";
+import CourseInformation from "./CourseInformation";
+import CourseOptions from "./CourseOptions";
+import CoursePreview from "./CoursePreview";
 
 type Props = {
   id: string;
 };
+
+interface CourseInfo {
+  name: string;
+  description: string;
+  categories: string;
+  price: string;
+  estimatedPrice: string;
+  tags: string;
+  level: string;
+  demoUrl: string;
+  thumbnail: string;
+}
+
+interface Benefit {
+  title: string;
+}
+
+interface Prerequisite {
+  title: string;
+}
+
+interface CourseContent {
+  videoUrl: string;
+  title: string;
+  description: string;
+  videoLength: number;
+  videoSection: string;
+  links: {
+    title: string;
+    url: string;
+  }[];
+  suggestion: string;
+}
+
+interface Course {
+  _id: string;
+  name: string;
+  description: string;
+  price: string;
+  categories: string;
+  estimatedPrice: string;
+  tags: string;
+  level: string;
+  demoUrl: string;
+  thumbnail: {
+    url: string;
+  };
+  benefits: Benefit[];
+  prerequisites: Prerequisite[];
+  courseData: CourseContent[];
+}
 
 const EditCourse: FC<Props> = ({ id }) => {
   const {
@@ -40,31 +90,46 @@ const EditCourse: FC<Props> = ({ id }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      const data = allCoursesData?.courses.find((i: any) => i._id === id);
+      const data = allCoursesData?.courses.find((i: Course) => i._id === id);
 
-      const {
-        name,
-        description,
-        price,
-        estimatedPrice,
-        tags,
-        level,
-        demoUrl,
-        thumbnail,
-      } = data;
-      setCourseInfo({
-        name,
-        description,
-        price,
-        estimatedPrice,
-        tags,
-        level,
-        demoUrl,
-        thumbnail: thumbnail?.url,
-      });
-      setBenefits(data.benefits);
-      setPrerequisites(data.prerequisites);
-      setCourseContentData(data.courseData);
+      if (data) {
+        const {
+          name,
+          description,
+          price,
+          categories,
+          estimatedPrice,
+          tags,
+          level,
+          demoUrl,
+          thumbnail,
+        } = data;
+        setCourseInfo({
+          name,
+          description,
+          categories,
+          price,
+          estimatedPrice,
+          tags,
+          level,
+          demoUrl,
+          thumbnail: thumbnail?.url,
+        });
+        // Create new objects for benefits and prerequisites
+        setBenefits(data.benefits.map((benefit: Benefit) => ({ ...benefit })));
+        setPrerequisites(
+          data.prerequisites.map((prerequisite: Prerequisite) => ({
+            ...prerequisite,
+          }))
+        );
+        // Create new objects for course content data
+        setCourseContentData(
+          data.courseData.map((content: CourseContent) => ({
+            ...content,
+            links: content.links.map((link) => ({ ...link })),
+          }))
+        );
+      }
     }
 
     if (error) {
@@ -73,12 +138,13 @@ const EditCourse: FC<Props> = ({ id }) => {
         toast.error(errMsg.data.message);
       }
     }
-  }, [allCoursesData, error, isSuccess]);
+  }, [allCoursesData, error, isSuccess, id]);
 
   const [active, setActive] = useState(0);
-  const [courseInfo, setCourseInfo] = useState({
+  const [courseInfo, setCourseInfo] = useState<CourseInfo>({
     name: "",
     description: "",
+    categories: "",
     price: "",
     estimatedPrice: "",
     tags: "",
@@ -86,10 +152,12 @@ const EditCourse: FC<Props> = ({ id }) => {
     demoUrl: "",
     thumbnail: "",
   });
-  const [benefits, setBenefits] = useState([{ title: "" }]);
-  const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
-  const [courseData, setCourseData] = useState({});
-  const [courseContentData, setCourseContentData] = useState([
+  const [benefits, setBenefits] = useState<Benefit[]>([{ title: "" }]);
+  const [prerequisites, setPrerequisites] = useState<Prerequisite[]>([
+    { title: "" },
+  ]);
+  const [courseData, setCourseData] = useState<Partial<Course>>({});
+  const [courseContentData, setCourseContentData] = useState<CourseContent[]>([
     {
       videoUrl: "",
       title: "",
@@ -107,22 +175,25 @@ const EditCourse: FC<Props> = ({ id }) => {
 
   const handleSubmit = async () => {
     // format benefits array
-    const formattedBenefits = benefits.map((benefit: any) => ({
+    const formattedBenefits = benefits.map((benefit: Benefit) => ({
       title: benefit.title,
     }));
     // format prerequisites array
-    const fromattedPrerequisites = prerequisites.map((prerequisite: any) => ({
-      title: prerequisite.title,
-    }));
+    const fromattedPrerequisites = prerequisites.map(
+      (prerequisite: Prerequisite) => ({
+        title: prerequisite.title,
+      })
+    );
 
     // format course content array
     const formattedCourseContentData = courseContentData.map(
-      (courseContent) => ({
+      (courseContent: CourseContent) => ({
         videoUrl: courseContent.videoUrl,
         title: courseContent.title,
         description: courseContent.description,
+        videoLength: courseContent.videoLength,
         videoSection: courseContent.videoSection,
-        links: courseContent.links.map((link: any) => ({
+        links: courseContent.links.map((link) => ({
           title: link.title,
           url: link.url,
         })),
@@ -134,17 +205,28 @@ const EditCourse: FC<Props> = ({ id }) => {
     const data = {
       name: courseInfo.name,
       description: courseInfo.description,
+      categories: courseInfo.categories,
       price: courseInfo.price,
       estimatedPrice: courseInfo.estimatedPrice,
       tags: courseInfo.tags,
       level: courseInfo.level,
       demoUrl: courseInfo.demoUrl,
-      thumbnail: courseInfo.thumbnail,
       totalVideos: courseContentData.length,
       benefits: formattedBenefits,
       prerequisites: fromattedPrerequisites,
       courseContent: formattedCourseContentData,
     };
+
+    // Only include thumbnail if it has been changed
+    if (
+      courseInfo.thumbnail &&
+      courseInfo.thumbnail !==
+        allCoursesData?.courses.find((i: Course) => i._id === id)?.thumbnail
+          ?.url
+    ) {
+      data.thumbnail = courseInfo.thumbnail;
+    }
+
     setCourseData(data);
   };
 
@@ -173,7 +255,7 @@ const EditCourse: FC<Props> = ({ id }) => {
         toast.error(errorData.data.message);
       }
     }
-  }, [editError, error, isSuccess]);
+  }, [editError, error, isSuccess, refetch, editSuccess]);
 
   if (isLoading || editLoading) {
     return <Loader />;

@@ -248,7 +248,15 @@ export const getUserInfo = catchAsyncErrors(
     try {
       const userId = req.user?._id as string;
 
-      const user = await redisClient.get(userId);
+      const userCache = await redisClient.get(userId);
+
+      if (userCache)
+        return res.status(200).json({
+          success: true,
+          user: JSON.parse(userCache),
+        });
+
+      const user = await UserModel.findById(userId);
 
       if (!user) {
         return next(ErrorHandler.notFound("User not found"));
@@ -256,7 +264,7 @@ export const getUserInfo = catchAsyncErrors(
 
       res.status(200).json({
         success: true,
-        user: JSON.parse(user),
+        user,
       });
     } catch (error: any) {
       return next(ErrorHandler.serverError(error.message));

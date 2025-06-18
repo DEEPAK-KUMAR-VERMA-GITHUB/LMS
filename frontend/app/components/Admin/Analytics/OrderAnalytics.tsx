@@ -57,7 +57,7 @@ const OrderAnalytics: FC<Props> = ({ isDashboard }) => {
 
           <div
             className={`w-full ${
-              isDashboard ? "h-[30vh]" : "h-screen"
+              isDashboard ? "h-[30vh]" : "h-[85vh]"
             } flex items-center justify-center `}
           >
             <ResponsiveContainer

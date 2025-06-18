@@ -12,9 +12,7 @@ import Loader from "@/app/components/Loader/Loader";
 import { styles } from "@/app/styles/style";
 import { useGetCoursesAnalyticsQuery } from "@/redux/features/analytics/analyticsApi";
 
-type Props = {};
-
-const CourseAnalytics: FC<Props> = () => {
+const CourseAnalytics: FC = () => {
   const { data, isLoading } = useGetCoursesAnalyticsQuery(undefined, {});
 
   const analyticsData: any[] = [];
@@ -32,7 +30,7 @@ const CourseAnalytics: FC<Props> = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="h-screen">
+        <div className="h-[92vh]">
           <div className="mt-[50px]">
             <h1 className={`${styles.title} px-5 !text-start`}>
               Courses Analytics

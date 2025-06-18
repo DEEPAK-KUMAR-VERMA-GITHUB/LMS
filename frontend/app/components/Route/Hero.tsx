@@ -1,14 +1,14 @@
-// import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
+import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, ChangeEvent, useState } from "react";
 import { BiSearch } from "react-icons/bi";
-// import Loader from "../Loader/Loader";
+import Loader from "../Loader/Loader";
 import { useRouter } from "next/navigation";
 import DefaultImage from "../../../public/assets/banner-img.png";
 
 const Hero: FC = () => {
-  //   const { data, isLoading } = useGetHeroDataQuery("Banner", {});
+  const { data, isLoading } = useGetHeroDataQuery("Banner", {});
   const [search, setSearch] = useState<string>("");
   const router = useRouter();
 
@@ -18,9 +18,7 @@ const Hero: FC = () => {
     }
   };
 
-  const data = null;
-
-  //   if (isLoading) return <Loader />;
+  if (isLoading) return <Loader />;
 
   return (
     <div className="w-full lg:flex items-center">

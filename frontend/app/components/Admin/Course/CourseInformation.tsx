@@ -17,8 +17,11 @@ const CourseInformation: FC<Props> = ({
   active,
   setActive,
 }) => {
+  console.log(courseInfo);
   const [dragging, setDragging] = useState(false);
-  const { data, error } = useGetHeroDataQuery("Categories");
+  const { data, error } = useGetHeroDataQuery("Categories", {
+    refetchOnMountOrArgChange: true,
+  });
 
   const [categories, setCategories] = useState<any>([]);
 

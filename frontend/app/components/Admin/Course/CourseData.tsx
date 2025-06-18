@@ -1,7 +1,7 @@
 import { styles } from "@/app/styles/style";
 import React, { FC } from "react";
 import toast from "react-hot-toast";
-import { MdAddCircle, MdRemove } from "react-icons/md";
+import { MdAddCircle, MdRemove, MdRemoveCircle } from "react-icons/md";
 
 type Props = {
   benefits: { title: string }[];
@@ -96,15 +96,14 @@ const CourseData: FC<Props> = ({
           <MdAddCircle
             style={{ marginBlock: "10px", cursor: "pointer", width: "30px" }}
             onClick={handleAddBenefit}
+            className="text-black dark:text-white"
           />
-          <MdRemove
+          <MdRemoveCircle
             style={{
               marginBlock: "10px",
               cursor: "pointer",
-              color: "red",
-              backgroundColor: "white",
-              borderRadius: "100%",
             }}
+            className="text-red-600"
             onClick={removeBenefit}
           />
         </div>
@@ -132,15 +131,14 @@ const CourseData: FC<Props> = ({
           <MdAddCircle
             style={{ marginBlock: "10px", cursor: "pointer", width: "30px" }}
             onClick={handleAddPrerequisite}
+            className="text-black dark:text-white"
           />
-          <MdRemove
+          <MdRemoveCircle
             style={{
               marginBlock: "10px",
               cursor: "pointer",
-              color: "red",
-              backgroundColor: "white",
-              borderRadius: "100%",
             }}
+            className="text-red-600"
             onClick={removePrerequisite}
           />
         </div>

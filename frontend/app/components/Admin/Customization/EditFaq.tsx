@@ -10,9 +10,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import toast from "react-hot-toast";
 
-type Props = {};
-
-const EditFaq: FC<Props> = () => {
+const EditFaq: FC = () => {
   const { data, isLoading, error, refetch } = useGetHeroDataQuery("FAQ", {
     refetchOnMountOrArgChange: true,
   });
@@ -35,7 +33,7 @@ const EditFaq: FC<Props> = () => {
       if ("data" in error) {
         const errMsg = error as any;
         toast.error(errMsg.data.message);
-      } 
+      }
     }
     if (editError) {
       if ("data" in editError) {
@@ -88,7 +86,7 @@ const EditFaq: FC<Props> = () => {
   if (isLoading) <Loader />;
 
   return (
-    <div className=" w-[90%] 800px:w-[80%] m-auto mt-[120px] ">
+    <div className=" w-[90%] md:w-[80%] m-auto mt-[120px] ">
       <div className="mt-12">
         <dl className="space-y-8 mb-8">
           {questions.map((q: any) => (

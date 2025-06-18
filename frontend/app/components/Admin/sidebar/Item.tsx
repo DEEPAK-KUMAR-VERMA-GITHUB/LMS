@@ -1,26 +1,31 @@
-import React, { FC } from "react";
+import React, { FC, ReactElement } from "react";
 import { MenuItem } from "react-pro-sidebar";
 import { Typography } from "@mui/material";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Props = {
   title: string;
   to: string;
-  icon: JSX.Element;
+  icon: ReactElement;
   selected: string;
   setSelected: (selected: string) => void;
 };
 
 const Item: FC<Props> = ({ title, to, icon, selected, setSelected }) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    setSelected(title);
+    router.push(to);
+  };
+
   return (
     <MenuItem
       active={selected === title}
       icon={icon}
-      onClick={() => setSelected(title)}
+      onClick={handleClick}
     >
-      <Link href={to}>
-        <Typography className="!text-[16px] !font-Poppins">{title}</Typography>
-      </Link>
+      <Typography className="!text-[16px] !font-Poppins">{title}</Typography>
     </MenuItem>
   );
 };

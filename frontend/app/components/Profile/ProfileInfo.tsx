@@ -22,8 +22,6 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     useEditProfileMutation();
   const { refetch } = useLoadUserQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    refetchOnFocus: true,
-    refetchOnReconnect: true,
   });
 
   const imageHandler = async (e: any) => {

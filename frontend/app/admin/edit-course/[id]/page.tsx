@@ -19,7 +19,7 @@ const Page: FC = () => {
       />
 
       <div className="flex">
-        <div className="1500px:w-[16%] w-1/5">
+        <div className="1500px:w-[15%] w-1/5">
           <AdminSidebar />
         </div>
         <div className="w-[85%]">

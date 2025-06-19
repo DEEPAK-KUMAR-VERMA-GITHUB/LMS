@@ -75,7 +75,7 @@ const AllInvoices = ({ isDashboard }: Props) => {
 
   const rows: any[] = [];
 
-  orderData &&
+  if (orderData) {
     orderData.forEach((order: any) => {
       const { _id: id, userName, userEmail, title, price, createdAt } = order;
       rows.push({
@@ -87,6 +87,7 @@ const AllInvoices = ({ isDashboard }: Props) => {
         created_at: format(createdAt),
       });
     });
+  }
 
   return (
     <div className={!isDashboard ? "mt-[120px]" : "mt-0"}>
@@ -96,7 +97,7 @@ const AllInvoices = ({ isDashboard }: Props) => {
         <Box m={isDashboard ? "0" : "40px"}>
           <Box
             m={isDashboard ? "0" : "40px 0 0 0"}
-            height={isDashboard ? "35vh" : "90vh"}
+            height={isDashboard ? "41vh" : "90vh"}
             overflow={"hidden"}
             sx={{
               "& .MuiDataGrid-root": {

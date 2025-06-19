@@ -93,14 +93,14 @@ const DashboardWidgets = ({ open }: Props) => {
   }, [ordersData, ordersLoading, usersData, usersLoading]);
 
   return (
-    <div className="mt-[30px] min-h-screen">
-      <div className="grid grid-cols-[75%,25%]">
+    <div className="mt-[30px] max-h-screen">
+      <div className="grid grid-cols-[75%_25%]">
         <div className="p-8">
           <UserAnalytics isDashboard={true} />
         </div>
-        <div className="pt-[80px] pr-8">
+        <div className="pt-[80px] pr-8 space-y-2 ">
           <div className="w-full dark:bg-[#111c43] rounded-sm shadow">
-            <div className="flex items-center p-5 justify-between">
+            <div className="flex items-center p-8 justify-between ">
               <div>
                 <BiBorderLeft className="dark:text-white text-black text-[30px]" />
                 <h5 className="pt-2 font-Poppins dark:text-white text-black text-[20px]">
@@ -119,7 +119,7 @@ const DashboardWidgets = ({ open }: Props) => {
                   }
                   open={open}
                 />
-                <h5 className="text-center pt-4 text-white">
+                <h5 className="text-center pt-8 text-white">
                   {parseInt(ordersComparePercentage?.percentageChange) > 0
                     ? "+"
                     : ""}
@@ -130,7 +130,7 @@ const DashboardWidgets = ({ open }: Props) => {
           </div>
 
           <div className="w-full dark:bg-[#111c43] rounded-sm shadow">
-            <div className="flex items-center p-5 justify-between">
+            <div className="flex items-center p-8 justify-between">
               <div>
                 <PiUsersFourLight className="dark:text-[#45cba0] text-black text-[30px]" />
                 <h5 className="py-2 font-Poppins dark:text-white text-black text-[20px]">
@@ -149,7 +149,7 @@ const DashboardWidgets = ({ open }: Props) => {
                   }
                   open={open}
                 />
-                <h5 className="text-center pt-4 text-white">
+                <h5 className="text-center pt-8 text-white">
                   {parseInt(usersComparePercentage?.percentageChange) > 0
                     ? "+"
                     : ""}
@@ -161,7 +161,7 @@ const DashboardWidgets = ({ open }: Props) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-[65%,35%] mt-[-20px]">
+      <div className="grid grid-cols-[65%_35%] mt-[-20px]">
         <div className="dark:bg-[#111c43] w-[94%] mt-[30px] h-[40vh] shadow-sm m-auto">
           <OrderAnalytics isDashboard={true} />
         </div>

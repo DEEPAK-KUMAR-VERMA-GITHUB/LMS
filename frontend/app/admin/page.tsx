@@ -14,8 +14,8 @@ const Page: FC = () => {
         description="LMS is a platform for students to learn and get help from teachers."
         keywords="Programming, MERN, Redux, Machine Learning"
       />
-      <div className="flex h-[200vh] ">
-        <div className="2xl:w-[16%] w-1/5">
+      <div className="flex">
+        <div className="2xl:w-[15%] w-1/5">
           <AdminSidebar />
         </div>
         <div className="w-[85%]">

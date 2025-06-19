@@ -18,7 +18,7 @@ const Page: FC<Props> = () => {
         keywords="Programming, MERN, Redux, Machine Learning"
       />
       <div className="flex min-h-screen">
-        <div className="2xl:w-[16%] w-1/5">
+        <div className="2xl:w-[15%] w-1/5">
           <AdminSidebar />
         </div>
         <div className="w-[85%]">

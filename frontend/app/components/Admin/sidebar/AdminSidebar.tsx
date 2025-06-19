@@ -1,11 +1,7 @@
-import React, { FC, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { Box, IconButton, Typography } from "@mui/material";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import avatarDefault from "../../../../public/assets/avatar.png";
-import { Box, IconButton, Typography } from "@mui/material";
-import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
-import Link from "next/link";
+import { FC, useEffect, useState } from "react";
 import {
   MdArrowBackIos,
   MdArrowForward,
@@ -23,21 +19,26 @@ import {
   MdWeb,
   MdWysiwyg,
 } from "react-icons/md";
+import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
+import { useSelector } from "react-redux";
+import avatarDefault from "../../../../public/assets/avatar.png";
 import Item from "./Item";
 
 const AdminSidebar: FC = () => {
   const { user } = useSelector((state: any) => state.auth);
-  const [logout, setLogout] = useState(false);
+  const [_, setLogout] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
 
-  const logoutHandler = () => setLogout(true);
+  const logoutHandler = () => {
+    setLogout(true);
+  };
 
   return (
     <Box

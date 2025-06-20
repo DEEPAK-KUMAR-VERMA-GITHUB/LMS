@@ -113,7 +113,7 @@ export const getSingleCourse = catchAsyncErrors(
         }
 
         // put course in redis
-        await redisClient.set(courseId, JSON.stringify(course), "EX", 604800);
+        await redisClient.set(`course-${courseId}`, JSON.stringify(course), "EX", 604800);
 
         res.status(200).json({
           success: true,
@@ -169,7 +169,7 @@ export const getCourseByUser = catchAsyncErrors(
       const courseList = req.user?.courses;
 
       const courseExists = courseList?.find(
-        (course: any) => course._id.toString() === courseId
+        (course: any) => course === courseId
       );
 
       if (!courseExists) {
@@ -230,13 +230,16 @@ export const addQuestion = catchAsyncErrors(
       courseContent.questions.push(newQuestion);
 
       await NotificationModel.create({
-        user: req.user?._id,
+        userId: req.user?._id,
         title: "New Question",
         message: `You have a new question in ${courseContent?.title}`,
       });
 
       // save the updated course
       await course?.save();
+
+      // clear data from redis
+      await redisClient.del(`course-${courseId}`);
 
       res.status(200).json({
         success: true,
@@ -288,6 +291,8 @@ export const addAnswer = catchAsyncErrors(
       const newAnswer: any = {
         user: req.user,
         answer,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       // add this answer to question replies
@@ -298,7 +303,7 @@ export const addAnswer = catchAsyncErrors(
 
       if (req.user?._id === question.user?._id) {
         await NotificationModel.create({
-          user: req.user?._id,
+          userId: req.user?._id,
           title: "New Reply Received",
           message: `You have a new reply in ${courseContent.title}`,
         });
@@ -324,6 +329,9 @@ export const addAnswer = catchAsyncErrors(
           return next(ErrorHandler.serverError(error.message));
         }
       }
+
+      // clear data from redis
+      await redisClient.del(`course-${courseId}`);
 
       res.status(200).json({
         success: true,
@@ -356,9 +364,7 @@ export const addReview = catchAsyncErrors(
       }
 
       // check if course exists in userCoursesList
-      const courseExists = userCourseList?.some(
-        (course: any) => course._id.toString() === courseId.toString()
-      );
+      const courseExists = userCourseList?.includes(courseId);
 
       if (!courseExists) {
         return next(
@@ -376,6 +382,8 @@ export const addReview = catchAsyncErrors(
         user: req.user,
         comment: review,
         rating,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       course?.reviews.push(newReviewData);
@@ -398,10 +406,14 @@ export const addReview = catchAsyncErrors(
 
       // create a notification
       await NotificationModel.create({
-        user: req.user?._id,
+        userId: req.user?._id,
         title: notification.title,
         message: notification.message,
       });
+
+      // clear data from redis
+      await redisClient.del(`course-${courseId}`);
+      await redisClient.del("allCourses");
 
       res.status(200).json({
         success: true,
@@ -443,15 +455,19 @@ export const addReplyToReview = catchAsyncErrors(
       const replyData: any = {
         user: req.user,
         comment,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       if (!review.commentReplies) {
         review.commentReplies = [];
       }
-
-      course.reviews.push(replyData);
+      review.commentReplies.push(replyData);
 
       await course?.save();
+
+      // clear data from redis
+      await redisClient.del(`course-${courseId}`);
 
       res.status(200).json({
         success: true,
@@ -496,7 +512,9 @@ export const deleteCourse = catchAsyncErrors(
 
       await course.deleteOne({ id });
 
-      await redisClient.del(id);
+      // clear data from redis
+      await redisClient.del(`course-${courseId}`);
+      await redisClient.del("allCourses");
 
       res.status(200).json({
         success: true,

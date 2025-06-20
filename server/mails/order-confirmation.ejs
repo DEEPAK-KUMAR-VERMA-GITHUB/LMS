@@ -2,11 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Confirmation</title>
 
-    <style type="stylesheet">
+    <style type="text/css">
       body {
         font-family: "Poppins", sans-serif;
         background-color: #f4f4f4;
@@ -16,9 +15,9 @@
 
       .container {
         max-width: 600px;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0 auto;
-        padding: 20px;
+        padding: 2rem;
         background-color: #4f5ef1;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         color: #fff;
@@ -26,63 +25,64 @@
 
       .message {
         text-align: center;
-        font-size: 18px;
-        margin-bottom: 20px;
-        padding-top: 50px;
+        font-size: 1.125rem;
+        margin-bottom: 1.25rem;
+        padding-top: 3.125rem;
       }
 
       .message-sm {
         text-align: center;
-        font-size: 18px;
-        margin-bottom: 20px;
-        padding-top: 50px;
+        font-size: 1.125rem;
+        margin-bottom: 1.25rem;
+        padding-top: 3.125rem;
       }
 
       .message-sm > h1 {
         text-align: center;
-        font-size: 25px;
+        font-size: 1.563rem;
         font-weight: 600;
+        margin-bottom: 0.5rem;
       }
 
       .course-info {
-        margin: auto;
-        padding-block: 20px;
-        width: 100%;
+        margin: 0 auto;
+        padding: 2rem;
+        width: calc(100% - 4rem);
         background-color: #fff;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 2px 2px 2px 2px rgba(206, 197, 197, 0.1);
+        border-radius: 0.625rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         color: #000;
       }
 
       .course-info > h4 {
         color: #23bd70;
-        font-size: 22px;
+        font-size: 1.375rem;
         font-family: "Poppins", sans-serif;
         font-weight: 500;
         text-align: center;
         padding: 0;
-        margin-top: 0;
+        margin: 0 0 1.5rem 0;
       }
 
       .course-name {
-        font-size: 24px;
-        margin-bottom: 10px;
+        font-size: 1.5rem;
+        margin-bottom: 0.625rem;
       }
 
       .purchase-info {
-        font-size: 16px;
+        font-size: 1rem;
       }
 
       .total {
-        font-size: 18px;
+        font-size: 1.125rem;
         text-align: right;
-        margin-top: 20px;
+        margin-top: 1.25rem;
       }
 
       .footer {
         text-align: center;
-        margin-top: 100px;
+        margin-top: 6.25rem;
         color: #fff;
       }
 
@@ -90,18 +90,23 @@
         text-decoration: none;
         display: inline-block;
         color: #fff;
+        transition: opacity 0.2s ease;
+      }
+
+      .footer > p > a:hover {
+        opacity: 0.8;
       }
 
       .flex {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid #9999993f;
+        border-bottom: 1px solid rgba(153, 153, 153, 0.25);
       }
 
       .flex h4 {
         font-weight: 400;
-        margin-bottom: 5px;
+        margin-bottom: 0.313rem;
       }
 
       .flex .lg {
@@ -112,51 +117,47 @@
 
       .first-td {
         text-transform: uppercase;
-        color: #0000006c;
-        font-size: 16px;
-        padding: 5px 0px;
-        width: 1%;
+        color: rgba(0, 0, 0, 0.42);
+        font-size: 1rem;
+        padding: 0.625rem;
         font-weight: 600;
+        text-align: left;
       }
 
       .second-td {
         font-weight: 500;
-        color: #000000af;
-        font-size: 15px;
+        color: rgba(0, 0, 0, 0.69);
+        font-size: 0.938rem;
+        text-align: left;
+        padding: 0.625rem;
       }
 
       .title {
-        font-size: 16px;
+        font-size: 1rem;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
+        margin-bottom: 1rem;
       }
 
       td {
-        padding: 10px;
-        text-align: center;
-        width: 28.33%;
+        padding: 0.625rem;
       }
 
-      td .col-2 {
-        width: 100%;
+      td.col-2 {
         text-align: left;
-        padding: 0;
-        margin: 0;
-      }
-
-      .m-auto {
-        width: 100%;
-        margin: auto;
+        padding: 0.625rem;
       }
 
       .table-row {
-        width: 70%;
-        display: block;
-        margin: auto;
-        padding-block: 10px;
+        width: 100%;
+        border-top: 1px solid rgba(0, 0, 0, 0.16);
+      }
+
+      .table-row td:last-child {
+        text-align: right;
       }
     </style>
   </head>
@@ -166,55 +167,53 @@
         <h1>Your LMS order is confirmed!</h1>
         <p>And we're just as excited as you are.</p>
       </div>
-      <br />
-      <br />
+
       <div class="course-info">
-        <h4>Here's what you ordered :</h4>
-        <table style="border-bottom: 1px solid #0000002f">
+        <h4>Here's what you ordered:</h4>
+        <table>
           <tr>
-            <td>Order #: <%= order._id %></td>
-            <td>Order Date: <%= order.date %></td>
+            <td style="text-align: left">Order #: <%= order._id %></td>
+            <td style="text-align: right">Order Date: <%= order.date %></td>
           </tr>
         </table>
 
-        <table style="width: 90%; margin: auto; display: block">
+        <table>
           <tr>
             <td class="first-td">Item</td>
-            <td class="first-td">Qty</td>
-            <td class="first-td">Cost</td>
+            <td class="first-td" style="text-align: center">Qty</td>
+            <td class="first-td" style="text-align: right">Cost</td>
           </tr>
         </table>
 
-        <table style="width: 90%; margin: auto; display: block">
+        <table>
           <tr>
             <td class="second-td"><%= order.name %></td>
-            <td class="second-td">1</td>
-            <td class="second-td"><%= order.price %></td>
+            <td class="second-td" style="text-align: center">1</td>
+            <td class="second-td" style="text-align: right"><%= order.price %></td>
           </tr>
         </table>
 
-        <table class="table-row" style="border-top: 1px solid #00000029">
+        <table class="table-row">
           <tr>
             <td class="col-2">Subtotal:</td>
             <td class="col-2">Rs. <%= order.price %></td>
           </tr>
         </table>
 
-        <table class="table-row" style="margin-top: -20px">
+        <table class="table-row">
           <tr>
-            <td class="col-2">Total:</td>
-            <td class="col-2">Rs. <%= order.price %></td>
+            <td class="col-2"><strong>Total:</strong></td>
+            <td class="col-2"><strong>Rs. <%= order.price %></strong></td>
           </tr>
         </table>
       </div>
+
       <div class="footer">
         <p>
           If you have any questions, please contact our support team at
-          <a href="mailto:support@elearning.com">support@lms.com</a>
+          <a href="mailto:support@lms.com">support@lms.com</a>
         </p>
-        <p>
-          &copy; <%= new Date().getFullYear %> LMS. All rights reserved.
-        </p>
+        <p>&copy; <%= new Date().getFullYear %> LMS. All rights reserved.</p>
       </div>
     </div>
   </body>

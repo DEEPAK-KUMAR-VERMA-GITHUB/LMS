@@ -13,12 +13,12 @@ const Page: FC<Props> = () => {
   return (
     <AdminProtected>
       <Heading
-        title="Admin || E-Learning"
+        title="Admin || LMS"
         description="Elearning is a platform for students to learn and get help from teachers."
         keywords="Programming, MERN, Redux, Machine Learning"
       />
       <div className="flex min-h-screen ">
-        <div className="1500px:w-[15%] w-1/5">
+        <div className="2xl:w-[15%] w-1/5">
           <AdminSidebar />
         </div>
         <div className="w-[85%]">

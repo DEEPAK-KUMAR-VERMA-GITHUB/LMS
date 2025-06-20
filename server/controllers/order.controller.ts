@@ -9,12 +9,27 @@ import ejs, { name } from "ejs";
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
 import redisClient from "../db/redis";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 // create order
 export const createOrder = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { courseId, payment_info }: IOrder = req.body;
+
+      if (payment_info) {
+        if ("id" in payment_info) {
+          const paymentIntentId = payment_info.id;
+          const paymentIntent = await stripe.paymentIntents.retrieve(
+            paymentIntentId
+          );
+          if (paymentIntent.status !== "succeeded") {
+            return next(new ErrorHandler("Payment not authorized", 400));
+          }
+        }
+      }
 
       const user = await UserModel.findById(req.user?._id);
 
@@ -89,8 +104,10 @@ export const createOrder = catchAsyncErrors(
 
       await user?.save();
 
+      await redisClient.set(req.user?._id, JSON.stringify(user) as any);
+
       await NotificationModel.create({
-        user: user?._id,
+        userId: user?._id,
         title: "New Order",
         message: `You have a new order from ${course?.name}`,
       });
@@ -121,3 +138,52 @@ export const getAllOrders = catchAsyncErrors(
     }
   }
 );
+
+// send stripe publishable key
+export const sendStripePublishableKey = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).json({
+      success: true,
+      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    });
+  }
+);
+
+// new payment
+export const newPayment = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const myPayment = await stripe.paymentIntents.create({
+        amount: req.body.amount,
+        currency: "INR",
+        metadata: {
+          company: "LMS",
+        },
+        automatic_payment_methods: {
+          enabled: true,
+        },
+        description: "For LMS Course Purchase",
+        receipt_email: req.user?.email,
+        shipping: {
+          name: req.user?.name,
+          address: {
+            line1: "510 Townsend St",
+            postal_code: "98140",
+            city: "San Francisco",
+            state: "CA",
+            country: "US",
+          },
+        },
+      });
+
+      res.status(201).json({
+        success: true,
+        client_secret: myPayment.client_secret,
+      });
+    } catch (error) {
+      return next(ErrorHandler.serverError(error.message));
+    }
+  }
+);
+
+//br31af6232

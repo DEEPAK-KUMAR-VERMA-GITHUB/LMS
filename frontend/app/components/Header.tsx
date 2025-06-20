@@ -40,10 +40,10 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
     data: userData,
     isLoading,
     refetch,
-  } = useLoadUserQuery(undefined, { 
+  } = useLoadUserQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
-    refetchOnReconnect: true
+    refetchOnReconnect: true,
   });
 
   useEffect(() => {
@@ -65,22 +65,22 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
     }
   }, [data, userData, isLoading, isSuccess]);
 
-  // useEffect(() => {
-  //   // Add event listener when the component is mounted
-  //   const handleScroll = () => {
-  //     if (window.scrollY > 80) setActive(true);
-  //     else setActive(false);
-  //   };
+  useEffect(() => {
+    // Add event listener when the component is mounted
+    const handleScroll = () => {
+      if (window.scrollY > 80) setActive(true);
+      else setActive(false);
+    };
 
-  //   if (typeof window !== "undefined") {
-  //     window.addEventListener("scroll", handleScroll);
-  //   }
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", handleScroll);
+    }
 
-  //   // Remove the event listener when the component is unmounted
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
+    // Remove the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // if clicked target is screen then setOpen sidebar false
   const handleClose = (e: any) => {
@@ -181,7 +181,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
               <br />
 
               <p className="text-[16px] px-2 pl-5 text-black dark:text-white">
-                Copyright &copy; {new Date().getFullYear()} E-Learning
+                Copyright &copy; {new Date().getFullYear()} LMS
               </p>
             </div>
           </div>

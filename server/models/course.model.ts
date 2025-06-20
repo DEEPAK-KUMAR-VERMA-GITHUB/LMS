@@ -59,38 +59,48 @@ interface ICourse extends Document {
   purchased?: number;
 }
 
-const reviewSchema = new Schema<IReview>({
-  user: Object,
-  rating: {
-    type: Number,
-    default: 0,
+const reviewSchema = new Schema<IReview>(
+  {
+    user: Object,
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    comment: String,
+    commentReplies: [Object],
   },
-  comment: String,
-});
+  { timestamps: true }
+);
 
 const linkSchema = new Schema<ILink>({
   title: String,
   url: String,
 });
 
-const questionsSchema = new Schema<IQuestions>({
-  user: Object,
-  question: String,
-  questionReplies: [Object],
-});
+const questionsSchema = new Schema<IQuestions>(
+  {
+    user: Object,
+    question: String,
+    questionReplies: [Object],
+  },
+  { timestamps: true }
+);
 
-const courseDataSchema = new Schema<ICourseData>({
-  title: String,
-  description: String,
-  videoUrl: String,
-  videoThubnail: Object,
-  videoSection: String,
-  videoLength: Number,
-  videoPlayer: String,
-  links: [linkSchema],
-  suggestion: String,
-  questions: [questionsSchema],
-});
+const courseDataSchema = new Schema<ICourseData>(
+  {
+    title: String,
+    description: String,
+    videoUrl: String,
+    videoThubnail: Object,
+    videoSection: String,
+    videoLength: Number,
+    videoPlayer: String,
+    links: [linkSchema],
+    suggestion: String,
+    questions: [questionsSchema],
+  },
+  { timestamps: true }
+);
 
 const courseSchema = new Schema<ICourse>(
   {

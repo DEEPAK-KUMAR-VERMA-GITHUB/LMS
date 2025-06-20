@@ -6,6 +6,8 @@ type Props = {
 };
 
 const EnrolledCourses = ({ courses }: Props) => {
+  console.log(courses);
+
   return (
     <>
       {courses.length > 0 ? (

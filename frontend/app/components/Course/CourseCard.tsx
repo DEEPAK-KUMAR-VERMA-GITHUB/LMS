@@ -32,7 +32,7 @@ const CourseCard = ({ course, isProfile }: Props) => {
           <Ratings rating={course.ratings} />
           <h5
             className={`text-black dark:text-white ${
-              isProfile && "hidden 800px:inline"
+              isProfile && "hidden md:inline"
             } `}
           >
             &nbsp; {course.purchased} Students

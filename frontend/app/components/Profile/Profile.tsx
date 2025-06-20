@@ -6,7 +6,10 @@ import { signOut } from "next-auth/react";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
 import EnrolledCourses from "./EnrolledCourses";
-import { useGetCourseQuery } from "@/redux/features/courses/courseApi";
+import {
+  useGetCourseQuery,
+  useGetCoursesQuery,
+} from "@/redux/features/courses/courseApi";
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import toast from "react-hot-toast";
 
@@ -23,7 +26,7 @@ const Profile: FC<Props> = ({ user }) => {
     skip: !logout ? true : false,
   });
 
-  // const { data, isLoading } = useGetCourseQuery(undefined, {});
+  const { data, isSuccess } = useGetCoursesQuery(undefined, {});
   const [courses, setCourses] = useState<any[]>([]);
 
   const logoutHandler = async () => {
@@ -39,14 +42,19 @@ const Profile: FC<Props> = ({ user }) => {
     });
   }
 
-  // useEffect(() => {
-  //   if (!isLoading && data) {
-  //     setCourses(data.courses.filter((course: any) => course._id === user._id));
-  //   }
-  // }, [data, user._id]);
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(user);
+      setCourses(
+        data.courses.filter((course: any) =>
+          user?.courses?.includes(course._id)
+        )
+      );
+    }
+  }, [data, user, isSuccess]);
 
   return (
-    <div className="w-[85%] flex mx-auto">
+    <div className="w-[85%] flex mx-auto items-center ">
       <div
         className={`w-[60px] md:w-[310px] h-[450px] dark:bg-slate-900 bg-opacity-90 border dark:border-[#ffffff1d] border-[#b9b5b5b0] rounded-[5px] shadow-sm mt-[80] mb-[80px] sticky bg-white ${
           scroll ? "top-[120px]" : " top-[30px]"

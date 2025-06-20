@@ -13,13 +13,13 @@ const Page: FC<Props> = () => {
   return (
     <div>
       <Heading
-        title="Admin || E-Learning"
-        description="E-Learning is a platform for student to learn and get help from the teachers."
+        title="Admin || LMS"
+        description="LMS is a platform for student to learn and get help from the teachers."
         keywords="Programming, MERN, Redux, Data Science, Machine Learning, Development"
       />
 
       <div className="flex">
-        <div className="1500px:w-[15%] w-1/5">
+        <div className="2xl:w-[15%] w-1/5">
           <AdminSidebar />
         </div>
         <div className="w-[85%]">

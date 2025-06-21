@@ -7,8 +7,13 @@
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "dist"
+    "outDir": "./build",
+    "rootDir": "../server"
   },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
-} 
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

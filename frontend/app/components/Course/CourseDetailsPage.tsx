@@ -48,7 +48,7 @@ const CourseDetailsPage: FC<Props> = ({ id }) => {
     <div>
       <Heading
         title={`${data.course.name} | LMS`}
-        description="ELearning is a programming community provides courses on various techstacks to improve and be a better version of yourself. Developed by Deepak Kumar Verma."
+        description="LMS is a programming community provides courses on various techstacks to improve and be a better version of yourself. Developed by Deepak Kumar Verma."
         keywords={data.course?.tags}
       />
       <Header

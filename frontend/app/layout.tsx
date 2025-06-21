@@ -8,6 +8,7 @@ import { Providers } from "./Provider";
 import { SessionProvider } from "next-auth/react";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Loader from "./components/Loader/Loader";
+import SecurityProtection from "./utils/SecurityProtection";
 import { useEffect } from "react";
 import socketIO from "socket.io-client";
 const socketId = socketIO(
@@ -44,6 +45,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               <Custom>{children}</Custom>
               <Toaster position="top-center" reverseOrder={false} />
+              <SecurityProtection />
             </ThemeProvider>
           </SessionProvider>
         </Providers>

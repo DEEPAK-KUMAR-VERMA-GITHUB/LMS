@@ -62,13 +62,23 @@ const Reviews = () => {
             See What They Say About Us
           </h3>
           <br />
-          <p className={styles.label}>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem
-            similique unde reprehenderit doloribus explicabo iusto quam eos
-            error, animi ad, voluptatum, pariatur maxime provident. Assumenda
-            laudantium laboriosam cumque, voluptatibus corrupti dolorem neque
-            sequi distinctio impedit modi hic ducimus quasi inventore alias rem
-            nam vero nobis excepturi. Blanditiis nulla reprehenderit ex.
+          <p className={`${styles.label} text-justify  `}>
+            Our learning platform has empowered thousands of students to achieve
+            their career goals through industry-relevant courses, expert
+            mentorship, and hands-on projects. We take pride in our community of
+            learners who consistently demonstrate exceptional growth and success
+            in their professional journeys. From beginners taking their first
+            steps in tech to experienced professionals looking to upskill, our
+            platform provides personalized learning paths that adapt to
+            individual needs and career aspirations. Our success stories span
+            across diverse backgrounds, industries, and skill levels, proving
+            that quality education combined with dedicated support can transform
+            careers and open new opportunities. The feedback from our students
+            reflects not just the quality of our content, but the strength of
+            our community and the commitment of our instructors. Every review
+            represents a journey of growth, achievement, and transformation that
+            inspires us to continue improving and expanding our educational
+            offerings.
           </p>
         </div>
       </div>

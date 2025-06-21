@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AiFillGithub, AiFillInstagram, AiFillYoutube } from "react-icons/ai";
+import { AiFillGithub, AiFillInstagram, AiFillLinkedin, AiFillYoutube } from "react-icons/ai";
 
 const Footer = () => {
   return (
@@ -23,7 +23,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/privacy-policy"
+                  href="/policy"
                   className="text-base text-black  hover:text-orange-500 dark:text-gray-300 dark:hover:text-white "
                 >
                   Privacy Policy
@@ -61,14 +61,6 @@ const Footer = () => {
                   My Account
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/course-dashboard"
-                  className="text-base text-black  hover:text-orange-500 dark:text-gray-300 dark:hover:text-white "
-                >
-                  Course Dashboard
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -92,20 +84,20 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="https://www.instagram.com"
+                  href="https://www.linkedin.com/in/deepak-kumar-verma-ramgarh"
                   className="text-base text-black  hover:text-orange-500 dark:text-gray-300 dark:hover:text-white flex flex-row gap-2 items-center "
                   rel="noopener noreferrer"
                 >
-                  <AiFillInstagram
+                  <AiFillLinkedin
                     size={20}
                     className="dark:text-white text-black"
                   />
-                  Instagram
+                  LinkedIn
                 </Link>
               </li>
               <li>
                 <Link
-                  href="https://www.github.com"
+                  href="https://github.com/DEEPAK-KUMAR-VERMA-GITHUB"
                   className="text-base text-black  hover:text-orange-500 dark:text-gray-300 dark:hover:text-white flex flex-row gap-2 items-center "
                   rel="noopener noreferrer"
                 >

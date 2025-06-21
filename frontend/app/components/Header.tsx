@@ -153,11 +153,11 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
           >
             <div className="w-[70%] fixed z-[100] h-screen bg-white dark:bg-slate-900 dark:bg-opacity-90 top-0 right-0">
               <NavItems activeItem={activeItem} isMobile={true} />
-              {userData.user ? (
+              {userData?.user ? (
                 <Link href="/profile">
                   <Image
                     src={
-                      userData.user.avatar ? userData.user.avatar.url : avatar
+                      userData?.user.avatar ? userData?.user?.avatar?.url : avatar
                     }
                     alt={userData.user.name}
                     width={30}

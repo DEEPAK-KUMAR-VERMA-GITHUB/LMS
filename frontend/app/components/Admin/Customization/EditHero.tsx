@@ -104,7 +104,7 @@ const EditHero = () => {
         <textarea
           cols={30}
           rows={4}
-          placeholder="Improve Your Online Learning Experience Better Instantly"
+          placeholder={title || "Title"}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="dark:text-white text-[#000000c7] text-[30px] resize-none px-3 w-full lg:text-[60px] 2xl:text-[70px] font-[600] font-Poppins mb-2 bg-transparent focus:outline-0 "
@@ -112,7 +112,7 @@ const EditHero = () => {
         <textarea
           cols={30}
           rows={4}
-          placeholder="We have 40k+ Online Courses & 500k+ Online registered students. Find your desired courses here..."
+          placeholder={subTitle || "Sub Title"}
           value={subTitle}
           onChange={(e) => setSubTitle(e.target.value)}
           className="dark:text-[#edfff4] text-[#000000ac] text-[18px] resize-none px-3 w-full xl:!w-[74%] 2xl:!w-[55%] font-[600] font-Josefin mb-6 bg-transparent focus:outline-0"

@@ -40,7 +40,7 @@ export const sendToken = async (
   // upload session to redis if available
   if (redisClient) {
     try {
-      await redisClient.set(user._id, JSON.stringify(user) as any);
+      await redisClient?.set(user._id, JSON.stringify(user) as any);
     } catch (error) {
       console.warn('Failed to store user session in Redis:', error);
     }

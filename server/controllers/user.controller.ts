@@ -173,7 +173,7 @@ export const logoutUser = catchAsyncErrors(
       res.cookie("refresh_token", "", { maxAge: 1 });
 
       // remove from redis
-      await redisClient.del(req.user?._id as string);
+      await redisClient?.del(req.user?._id as string);
 
       res.status(200).json({
         success: true,
@@ -208,7 +208,7 @@ export const updateAccessToken = catchAsyncErrors(
         );
       }
 
-      const session = await redisClient.get(decoded.id as string);
+      const session = await redisClient?.get(decoded.id as string);
       if (!session) {
         return next(new ErrorHandler("Session expired", 400));
       }
@@ -233,7 +233,7 @@ export const updateAccessToken = catchAsyncErrors(
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
-      await redisClient.set(user._id, JSON.stringify(user), "EX", 604800);
+      await redisClient?.set(user._id, JSON.stringify(user), "EX", 604800);
 
       next();
     } catch (error: any) {
@@ -248,7 +248,7 @@ export const getUserInfo = catchAsyncErrors(
     try {
       const userId = req.user?._id as string;
 
-      const userCache = await redisClient.get(userId);
+      const userCache = await redisClient?.get(userId);
 
       if (userCache)
         return res.status(200).json({
@@ -320,7 +320,7 @@ export const updateUserInfo = catchAsyncErrors(
 
       await user.save();
 
-      await redisClient.set(userId as string, JSON.stringify(user));
+      await redisClient?.set(userId as string, JSON.stringify(user));
 
       res.status(201).json({
         success: true,
@@ -406,7 +406,7 @@ export const updateProfilePicture = catchAsyncErrors(
 
         await user.save();
 
-        await redisClient.set(user._id as string, JSON.stringify(user));
+        await redisClient?.set(user._id as string, JSON.stringify(user));
       }
 
       res.status(201).json({
@@ -451,7 +451,7 @@ export const updateUserRole = catchAsyncErrors(
         return next(ErrorHandler.notFound("User not found"));
       }
 
-      await redisClient.del(id);
+      await redisClient?.del(id);
 
       res.status(201).json({
         success: true,
@@ -477,7 +477,7 @@ export const deleteUser = catchAsyncErrors(
 
       await user.deleteOne({ id });
 
-      await redisClient.del(id);
+      await redisClient?.del(id);
 
       res.status(200).json({
         success: true,

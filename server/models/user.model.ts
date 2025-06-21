@@ -20,7 +20,7 @@ export interface IUser extends Document {
   };
   role: "admin" | "user";
   isVerified: boolean;
-  courses: Array<{ courseId: string }>;
+  courses: Array<string>;
   comparePassword: (password: string) => Promise<boolean>;
   SignAccessToken: () => string;
   SignRefreshToken: () => string;

@@ -46,7 +46,7 @@ export const createLayout = catchAsyncErrors(
       }
 
       // clear redis cache
-      await redisClient.del(`layout-${type}`);
+      await redisClient?.del(`layout-${type}`);
 
       res.status(201).json({
         success: true,
@@ -118,7 +118,7 @@ export const editLayout = catchAsyncErrors(
       }
 
       // clear redis cache
-      await redisClient.del(`layout-${type}`);
+      await redisClient?.del(`layout-${type}`);
 
       res.status(200).json({
         success: true,
@@ -137,7 +137,7 @@ export const getLayoutByType = catchAsyncErrors(
       const { type } = req.params;
 
       // if cache available in redis
-      const layoutCache = await redisClient.get(`layout-${type}`);
+      const layoutCache = await redisClient?.get(`layout-${type}`);
       if (layoutCache) {
         return res.status(200).json({
           success: true,
@@ -152,7 +152,7 @@ export const getLayoutByType = catchAsyncErrors(
       }
 
       // store in redis
-      await redisClient.set(`layout-${type}`, JSON.stringify(layout));
+      await redisClient?.set(`layout-${type}`, JSON.stringify(layout));
 
       res.status(200).json({
         success: true,

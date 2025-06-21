@@ -31,7 +31,7 @@ export const uploadCourse = catchAsyncErrors(
       const course = await CourseModel.create(data);
 
       // clear courses from redis
-      await redisClient.del("allCourses");
+      await redisClient?.del("allCourses");
 
       res.status(201).json({
         success: true,
@@ -75,7 +75,7 @@ export const editCourse = catchAsyncErrors(
       );
 
       // clear all courses from redis
-      await redisClient.del("allCourses");
+      await redisClient?.del("allCourses");
 
       res.status(201).json({
         success: true,
@@ -95,7 +95,7 @@ export const getSingleCourse = catchAsyncErrors(
       const { courseId } = req.params;
 
       // check if course cache exists in redis
-      const isCacheExists = await redisClient.get(courseId);
+      const isCacheExists = await redisClient?.get(courseId);
 
       if (isCacheExists) {
         const course = JSON.parse(isCacheExists);
@@ -113,7 +113,12 @@ export const getSingleCourse = catchAsyncErrors(
         }
 
         // put course in redis
-        await redisClient.set(`course-${courseId}`, JSON.stringify(course), "EX", 604800);
+        await redisClient?.set(
+          `course-${courseId}`,
+          JSON.stringify(course),
+          "EX",
+          604800
+        );
 
         res.status(200).json({
           success: true,
@@ -130,7 +135,7 @@ export const getSingleCourse = catchAsyncErrors(
 export const getAllCourses = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const isCacheExists = await redisClient.get("allCourses");
+      const isCacheExists = await redisClient?.get("allCourses");
 
       if (isCacheExists) {
         return res.status(200).json({
@@ -142,7 +147,7 @@ export const getAllCourses = catchAsyncErrors(
           "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
         );
 
-        await redisClient.set(
+        await redisClient?.set(
           "allCourses",
           JSON.stringify(courses),
           "EX",
@@ -239,7 +244,7 @@ export const addQuestion = catchAsyncErrors(
       await course?.save();
 
       // clear data from redis
-      await redisClient.del(`course-${courseId}`);
+      await redisClient?.del(`course-${courseId}`);
 
       res.status(200).json({
         success: true,
@@ -331,7 +336,7 @@ export const addAnswer = catchAsyncErrors(
       }
 
       // clear data from redis
-      await redisClient.del(`course-${courseId}`);
+      await redisClient?.del(`course-${courseId}`);
 
       res.status(200).json({
         success: true,
@@ -412,8 +417,8 @@ export const addReview = catchAsyncErrors(
       });
 
       // clear data from redis
-      await redisClient.del(`course-${courseId}`);
-      await redisClient.del("allCourses");
+      await redisClient?.del(`course-${courseId}`);
+      await redisClient?.del("allCourses");
 
       res.status(200).json({
         success: true,
@@ -467,7 +472,7 @@ export const addReplyToReview = catchAsyncErrors(
       await course?.save();
 
       // clear data from redis
-      await redisClient.del(`course-${courseId}`);
+      await redisClient?.del(`course-${courseId}`);
 
       res.status(200).json({
         success: true,
@@ -513,8 +518,8 @@ export const deleteCourse = catchAsyncErrors(
       await course.deleteOne({ id });
 
       // clear data from redis
-      await redisClient.del(`course-${courseId}`);
-      await redisClient.del("allCourses");
+      await redisClient?.del(`course-${course._id}`);
+      await redisClient?.del("allCourses");
 
       res.status(200).json({
         success: true,

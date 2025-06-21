@@ -23,7 +23,7 @@ export const createOrder = catchAsyncErrors(
         if ("id" in payment_info) {
           const paymentIntentId = payment_info.id;
           const paymentIntent = await stripe.paymentIntents.retrieve(
-            paymentIntentId
+            paymentIntentId as string
           );
           if (paymentIntent.status !== "succeeded") {
             return next(new ErrorHandler("Payment not authorized", 400));
@@ -99,12 +99,12 @@ export const createOrder = catchAsyncErrors(
         await course.save();
 
         // remove this course from redis
-        await redisClient.del(courseId);
+        await redisClient?.del(courseId);
       }
 
       await user?.save();
 
-      await redisClient.set(req.user?._id, JSON.stringify(user) as any);
+      await redisClient?.set(req.user?._id!, JSON.stringify(user) as any);
 
       await NotificationModel.create({
         userId: user?._id,
@@ -165,7 +165,7 @@ export const newPayment = catchAsyncErrors(
         description: "For LMS Course Purchase",
         receipt_email: req.user?.email,
         shipping: {
-          name: req.user?.name,
+          name: req.user?.name!,
           address: {
             line1: "510 Townsend St",
             postal_code: "98140",
@@ -180,7 +180,7 @@ export const newPayment = catchAsyncErrors(
         success: true,
         client_secret: myPayment.client_secret,
       });
-    } catch (error) {
+    } catch (error: any) {
       return next(ErrorHandler.serverError(error.message));
     }
   }

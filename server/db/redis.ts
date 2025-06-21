@@ -15,11 +15,11 @@ if (redisUrl) {
       connectTimeout: 10000,
     });
     
-    redisClient.on('error', (err) => {
+    redisClient?.on('error', (err) => {
       console.warn('Redis connection error:', err.message);
     });
     
-    redisClient.on('connect', () => {
+    redisClient?.on('connect', () => {
       console.log('Redis connected successfully');
     });
   } catch (error) {

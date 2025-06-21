@@ -29,8 +29,10 @@ export const isAuthenticated = catchAsyncErrors(
     let user = null;
     if (redisClient) {
       try {
-        user = await redisClient.get(decoded.id);
-        req.user = JSON.parse(user);
+        user = await redisClient?.get(decoded.id);
+        if (user) {
+          req.user = JSON.parse(user);
+        }
       } catch (error) {
         console.warn("Failed to get user from Redis:", error);
       }

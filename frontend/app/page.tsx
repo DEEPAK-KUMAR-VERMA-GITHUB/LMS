@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import Header from "./components/Header";
 import Heading from "./utils/Heading";
 import Hero from "./components/Route/Hero";
@@ -9,7 +9,7 @@ import Reviews from "./components/Route/Reviews";
 import FAQ from "./components/FAQ/FAQ";
 import Footer from "./components/Footer";
 
-const HomePage: FC = () => {
+const HomePage = () => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
   const [route, setRoute] = useState<string>("Login");

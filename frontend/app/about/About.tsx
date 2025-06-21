@@ -1,9 +1,7 @@
 import React from "react";
 import { styles } from "../styles/style";
 
-type Props = {};
-
-const About = (props: Props) => {
+const About = () => {
   return (
     <div className="text-black dark:text-white">
       <h1 className={`${styles.title} md:!text-[45px] mb-2`}>
@@ -38,7 +36,7 @@ const About = (props: Props) => {
           partnerships make professional development accessible to individuals and teams alike.
           <br />
           <br />
-          The LMS community is our greatest strength. We've cultivated an engaging, 
+          The LMS community is our greatest strength. We&apos;ve cultivated an engaging, 
           collaborative environment where students can connect, share experiences, 
           and grow together. Our mentors and community leaders, including senior developers
           and tech leads from prominent companies, are always available to provide guidance 
@@ -47,7 +45,7 @@ const About = (props: Props) => {
           <br />
           Through our comprehensive curriculum, hands-on projects, and industry-aligned 
           training, we equip you with the skills and confidence needed to excel in 
-          today's competitive tech landscape. Our success is measured by your growth 
+          today&apos;s competitive tech landscape. Our success is measured by your growth 
           and achievement in the programming field, evidenced by our graduates working
           at leading technology companies worldwide.
           <br />

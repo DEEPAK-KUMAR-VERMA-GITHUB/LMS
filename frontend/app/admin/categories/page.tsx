@@ -5,11 +5,9 @@ import DashboardHero from "@/app/components/Admin/DashboardHero";
 import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
 import AdminProtected from "@/app/hooks/adminProtected";
 import Heading from "@/app/utils/Heading";
-import React, { FC } from "react";
+import React from "react";
 
-type Props = {};
-
-const Page: FC<Props> = () => {
+const Page = () => {
   return (
     <AdminProtected>
       <Heading

@@ -72,7 +72,7 @@ const AllCourses: FC = () => {
     },
   ];
 
-  const rows = [];
+  const rows: any = [];
 
   if (data?.courses) {
     data.courses.forEach(

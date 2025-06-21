@@ -5,7 +5,8 @@ import { useParams } from "next/navigation";
 import {} from "react";
 
 const Page = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params?.id as string;
 
   return (
     <div>

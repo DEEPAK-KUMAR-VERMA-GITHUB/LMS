@@ -8,7 +8,8 @@ import CourseContent from "@/app/components/Course/CourseContent";
 import Footer from "@/app/components/Footer";
 
 const Page = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params?.id as string;
   const { isLoading, error, data } = useLoadUserQuery(undefined, {});
 
   useEffect(() => {

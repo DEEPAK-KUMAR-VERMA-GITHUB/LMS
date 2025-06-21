@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Header from "../components/Header";
-import Heading from "../utils/Heading";
-import { useSelector } from "react-redux";
 import FAQ from "../components/FAQ/FAQ";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
+import Heading from "../utils/Heading";
 
-type Props = {};
 
-const Page = (props: Props) => {
+
+const Page = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [activeItem, setActiveItem] = useState<number>(4);
   const [route, setRoute] = useState<string>("Login");

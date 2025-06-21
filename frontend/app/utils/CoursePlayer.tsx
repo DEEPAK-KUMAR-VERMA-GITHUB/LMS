@@ -6,7 +6,7 @@ type Props = {
   title: string;
 };
 // sample video url = 461f8bce79ccae5f5d820abf57612f44
-const CoursePlayer: FC<Props> = ({ videoUrl = "", title }) => {
+const CoursePlayer: FC<Props> = ({ videoUrl = "", title = "" }) => {
   const [videoData, setVideoData] = useState({
     otp: "",
     playbackInfo: "",

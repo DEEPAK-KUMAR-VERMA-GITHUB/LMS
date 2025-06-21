@@ -1,16 +1,16 @@
 "use client";
 
-import React, { FC, useState } from "react";
-import Protected from "../hooks/useProtected";
-import Heading from "../utils/Heading";
-import Header from "../components/Header";
-import Profile from "../components/Profile/Profile";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
+import Profile from "../components/Profile/Profile";
+import Protected from "../hooks/useProtected";
+import Heading from "../utils/Heading";
 
-type Props = {};
 
-const Page: FC<Props> = (props) => {
+
+const Page = () => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(5);
   const [route, setRoute] = useState("Login");

@@ -28,9 +28,14 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
 
   const [notifications, setNotifications] = useState<any[]>([]);
 
-  const [audio] = useState(new Audio(process.env.NEXT_NOTIFICATION_AUDIO_URL));
+  const [audio] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return new Audio(process.env.NEXT_NOTIFICATION_AUDIO_URL);
+    }
+    return null;
+  });
 
-  const playNotificationSound = () => audio.play();
+  const playNotificationSound = () => audio?.play();
 
   useEffect(() => {
     if (data) {
@@ -45,7 +50,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
       refetch();
     }
 
-    audio.load();
+    audio?.load();
   }, [data, isSuccess]);
 
   useEffect(() => {

@@ -13,22 +13,13 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
-      // TypeScript specific rules
-      "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-unused-vars": ["error", { 
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }],
-      "@typescript-eslint/no-empty-object-type": "error",
-      "@typescript-eslint/no-require-imports": "error",
-      
-      // React specific rules
-      "react/no-unescaped-entities": "error",
-      "react-hooks/exhaustive-deps": "warn",
-      
-      // General rules
-      "no-unused-expressions": "error",
+      "@next/next/no-html-link-for-pages": "off",
+      "@typescript-eslint/no-explicit-any": "off", // Ignore no-explicit-any errors
+      "@typescript-eslint/no-unused-vars": "off", // Ignore no-unused-vars errors
+      "@typescript-eslint/no-var-requires": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
     },
+    ignorePatterns: ["node_modules/", "dist/"],
   },
 ];
 

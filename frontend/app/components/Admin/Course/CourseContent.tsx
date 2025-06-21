@@ -21,8 +21,6 @@ const CourseContent: FC<Props> = ({
   setCourseContentData,
   handleSubmit: handleCourseSubmit,
 }) => {
-  console.log(courseContentData);
-
   const [isCollapsed, setIsCollapsed] = useState(
     Array(courseContentData.length).fill(false)
   );

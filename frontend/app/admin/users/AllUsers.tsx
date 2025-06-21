@@ -143,7 +143,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
     });
   } else {
     if (data?.users) {
-      data.users.forEach((item) => {
+      data.users.forEach((item: any) => {
         const { _id, name, email, role, courses, createdAt } = item;
         rows.push({
           id: _id,

@@ -6,6 +6,9 @@ import { BiSearch } from "react-icons/bi";
 import Loader from "../Loader/Loader";
 import { useRouter } from "next/navigation";
 import DefaultImage from "../../../public/assets/banner-img.png";
+import client1Image from "../../../public/assets/client-1.jpg";
+import client2Image from "../../../public/assets/client-2.jpg";
+import client3Image from "../../../public/assets/client-3.jpg";
 
 const Hero: FC = () => {
   const { data, isLoading } = useGetHeroDataQuery("Banner", {});
@@ -58,7 +61,6 @@ const Hero: FC = () => {
               className="text-white"
               size={30}
               onClick={handleSearch}
-              disabled={search.trim().length === 0}
             />
           </div>
         </div>
@@ -66,17 +68,17 @@ const Hero: FC = () => {
         <br />
         <div className="2xl:w-[55%] xl:w-[78%] w-[90%] flex items-center">
           <Image
-            src={require("../../../public/assets/client-1.jpg")}
+            src={client1Image}
             alt="client-1"
             className="rounded-full ml-[-20px]"
           />
           <Image
-            src={require("../../../public/assets/client-2.jpg")}
+            src={client2Image}
             alt="client-2"
             className="rounded-full ml-[-20px]"
           />
           <Image
-            src={require("../../../public/assets/client-3.jpg")}
+            src={client3Image}
             alt="client-3"
             className="rounded-full ml-[-20px]"
           />

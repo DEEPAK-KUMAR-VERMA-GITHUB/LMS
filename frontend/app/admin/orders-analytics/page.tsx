@@ -1,15 +1,12 @@
 "use client";
 
+import OrderAnalytics from "@/app/components/Admin/Analytics/OrderAnalytics";
 import DashboardHero from "@/app/components/Admin/DashboardHero";
 import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
-import OrderAnalytics from "@/app/components/Admin/Analytics/OrderAnalytics";
 import AdminProtected from "@/app/hooks/adminProtected";
 import Heading from "@/app/utils/Heading";
-import React, { FC } from "react";
 
-type Props = {};
-
-const Page: FC<Props> = () => {
+const Page = () => {
   return (
     <AdminProtected>
       <Heading

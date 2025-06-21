@@ -4,11 +4,9 @@ import CreateCourse from "@/app/components/Admin/Course/CreateCourse";
 import DashboardHeader from "@/app/components/Admin/DashboardHeader";
 import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
 import Heading from "@/app/utils/Heading";
-import React, { FC, useState } from "react";
+import { useState } from "react";
 
-type Props = {};
-
-const Page: FC<Props> = () => {
+const Page = () => {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <div>

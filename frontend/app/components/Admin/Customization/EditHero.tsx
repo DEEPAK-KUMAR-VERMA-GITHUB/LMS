@@ -1,17 +1,15 @@
+import { styles } from "@/app/styles/style";
 import {
   useEditLayoutMutation,
   useGetHeroDataQuery,
 } from "@/redux/features/layout/layoutApi";
-import React, { FC, useEffect, useState } from "react";
-import Loader from "../../Loader/Loader";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineCamera } from "react-icons/ai";
-import { styles } from "@/app/styles/style";
-import Image from "next/image";
+import Loader from "../../Loader/Loader";
 
-type Props = {};
-
-const EditHero: FC<Props> = () => {
+const EditHero = () => {
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");

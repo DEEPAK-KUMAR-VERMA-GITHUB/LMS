@@ -1,9 +1,8 @@
-import React from "react";
 import { styles } from "../styles/style";
 
-type Props = {};
 
-const Policy = (props: Props) => {
+
+const Policy = () => {
   return (
     <div className="text-black dark:text-white">
       <div className="w-[95%] md:w-[92%] m-auto py-2">

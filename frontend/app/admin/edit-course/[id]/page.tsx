@@ -5,10 +5,13 @@ import DashboardHeader from "@/app/components/Admin/DashboardHeader";
 import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
 import Heading from "@/app/utils/Heading";
 import { useParams } from "next/navigation";
-import React, { FC } from "react";
+import React, { useState } from "react";
 
-const Page: FC = () => {
-  const { id } = useParams();
+const Page = () => {
+  const params = useParams();
+  const id = params?.id as string;
+
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
@@ -23,7 +26,7 @@ const Page: FC = () => {
           <AdminSidebar />
         </div>
         <div className="w-[85%]">
-          <DashboardHeader />
+          <DashboardHeader open={open} setOpen={setOpen} />
           <EditCourse id={id} />
         </div>
       </div>

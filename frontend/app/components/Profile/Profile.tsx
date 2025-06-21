@@ -1,17 +1,15 @@
 "use client";
-import React, { FC, useEffect, useState } from "react";
-import SideBarProfile from "./SideBarProfile";
 import { useLogoutQuery } from "@/redux/features/auth/authApi";
+import {
+  useGetCoursesQuery
+} from "@/redux/features/courses/courseApi";
 import { signOut } from "next-auth/react";
-import ProfileInfo from "./ProfileInfo";
+import { FC, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import ChangePassword from "./ChangePassword";
 import EnrolledCourses from "./EnrolledCourses";
-import {
-  useGetCourseQuery,
-  useGetCoursesQuery,
-} from "@/redux/features/courses/courseApi";
-import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
-import toast from "react-hot-toast";
+import ProfileInfo from "./ProfileInfo";
+import SideBarProfile from "./SideBarProfile";
 
 type Props = {
   user: any;

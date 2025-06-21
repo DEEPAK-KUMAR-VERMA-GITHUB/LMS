@@ -5,11 +5,8 @@ import AllInvoices from "@/app/components/Admin/Order/AllInvoices";
 import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
 import AdminProtected from "@/app/hooks/adminProtected";
 import Heading from "@/app/utils/Heading";
-import React, { FC } from "react";
 
-type Props = {};
-
-const Page: FC<Props> = () => {
+const Page = () => {
   return (
     <AdminProtected>
       <Heading

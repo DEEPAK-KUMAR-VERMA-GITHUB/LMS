@@ -170,6 +170,7 @@ const EditCourse: FC<Props> = ({ id }) => {
         },
       ],
       suggestion: "",
+      videoLength: 0,
     },
   ]);
 
@@ -202,7 +203,7 @@ const EditCourse: FC<Props> = ({ id }) => {
     );
 
     // prepare course data object
-    const data = {
+    const data: any = {
       name: courseInfo.name,
       description: courseInfo.description,
       categories: courseInfo.categories,

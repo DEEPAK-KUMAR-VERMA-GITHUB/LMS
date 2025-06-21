@@ -1,17 +1,15 @@
+import { styles } from "@/app/styles/style";
 import {
   useEditLayoutMutation,
   useGetHeroDataQuery,
 } from "@/redux/features/layout/layoutApi";
-import React, { FC, useEffect, useState } from "react";
-import Loader from "../../Loader/Loader";
-import { styles } from "@/app/styles/style";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import toast from "react-hot-toast";
+import Loader from "../../Loader/Loader";
 
-type Props = {};
-
-const EditCategories: FC<Props> = () => {
+const EditCategories = () => {
   const { data, isLoading, refetch } = useGetHeroDataQuery("Categories", {
     refetchOnMountOrArgChange: true,
   });

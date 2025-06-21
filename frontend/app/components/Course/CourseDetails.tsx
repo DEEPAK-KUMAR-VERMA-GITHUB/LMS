@@ -49,7 +49,7 @@ const CourseDetails = ({
     courseData.estimatedPrice
   ).toFixed(0);
 
-  const handleOrder = (e: any) => {
+  const handleOrder = () => {
     if (user) setOpen(true);
     else {
       setRoute("Login");

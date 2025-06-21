@@ -9,14 +9,13 @@ import { SessionProvider } from "next-auth/react";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Loader from "./components/Loader/Loader";
 import { useEffect } from "react";
-// import { useEffect } from "react";
-// import socketIO from "socket.io-client";
-// const socketId = socketIO(
-//   process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "http://localhost:3000",
-//   {
-//     transports: ["websocket"],
-//   }
-// );
+import socketIO from "socket.io-client";
+const socketId = socketIO(
+  process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "http://localhost:3000",
+  {
+    transports: ["websocket"],
+  }
+);
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -58,8 +57,6 @@ const Custom: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     {},
     {
       refetchOnMountOrArgChange: true,
-      refetchOnFocus: true,
-      refetchOnReconnect: true,
     }
   );
 
@@ -69,14 +66,14 @@ const Custom: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }, []);
 
   // make socket connection and handle error
-  // useEffect(() => {
-  //   socketId.on("connect_error", (err) => {
-  //     console.log(`connect_error due to ${err}`);
-  //   });
-  //   socketId.on("connection", () => {
-  //     console.log("connected");
-  //   });
-  // }, []);
+  useEffect(() => {
+    socketId.on("connect_error", (err) => {
+      console.log(`connect_error due to ${err}`);
+    });
+    socketId.on("connection", () => {
+      console.log("connected");
+    });
+  }, []);
 
   return isLoading ? <Loader /> : <>{children}</>;
 };

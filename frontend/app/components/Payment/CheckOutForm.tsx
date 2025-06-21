@@ -9,10 +9,10 @@ import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-// import socketIO from "socket.io-client";
-// const socketId = socketIO(process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "", {
-//   transports: ["websocket"],
-// });
+import socketIO from "socket.io-client";
+const socketId = socketIO(process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "", {
+  transports: ["websocket"],
+});
 
 type Props = {
   setOpen: (open: boolean) => void;
@@ -61,11 +61,11 @@ const CheckOutForm = ({ setOpen, courseData, user }: Props) => {
     if (orderData) {
       setLoadUser(true);
       setOpen(false);
-      // socketId.emit("notification", {
-      //   title: "New Order",
-      //   message: `New order for ${courseData.name} by ${user.name}`,
-      //   userId: user._id,
-      // });
+      socketId.emit("notification", {
+        title: "New Order",
+        message: `New order for ${courseData.name} by ${user.name}`,
+        userId: user._id,
+      });
       redirect(`/course-access/${courseData._id}`);
     }
     if (error) {

@@ -11,9 +11,7 @@ import { styles } from "../styles/style";
 import CourseCard from "../components/Course/CourseCard";
 import Footer from "../components/Footer";
 
-type Props = {};
-
-const Page = (props: Props) => {
+const Page = () => {
   const searchParams = useSearchParams();
   const search = searchParams?.get("title");
   const { data, isLoading } = useGetCoursesQuery(undefined, {});

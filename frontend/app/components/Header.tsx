@@ -42,7 +42,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
     refetch,
   } = useLoadUserQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    refetchOnFocus: true,
     refetchOnReconnect: true,
   });
 

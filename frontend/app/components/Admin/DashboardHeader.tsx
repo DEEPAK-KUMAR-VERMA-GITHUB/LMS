@@ -3,15 +3,15 @@
 import React, { FC, useEffect, useState } from "react";
 import ThemeSwitcher from "../../../app/utils/ThemeSwitcher";
 import { IoMdNotificationsOutline } from "react-icons/io";
-// import socketIO from "socket.io-client";
+import socketIO from "socket.io-client";
 import {
   useGetAllNotificationsQuery,
   useUpdatedNotificationStatusMutation,
 } from "@/redux/features/notifications/notificationsApi";
 import { format } from "timeago.js";
-// const socketId = socketIO(process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "", {
-//   transports: ["websocket"],
-// });
+const socketId = socketIO(process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "", {
+  transports: ["websocket"],
+});
 
 type Props = {
   open: boolean;
@@ -48,12 +48,12 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
     audio.load();
   }, [data, isSuccess]);
 
-  // useEffect(() => {
-  //   socketId.on("newNotification", (data) => {
-  //     refetch();
-  //     playNotificationSound();
-  //   });
-  // }, []);
+  useEffect(() => {
+    socketId.on("newNotification", (data) => {
+      refetch();
+      playNotificationSound();
+    });
+  }, [playNotificationSound]);
 
   const handleNotificationStatusChange = async (id: string) => {
     await updateNotificationStatus(id);

@@ -146,7 +146,7 @@ const CourseContentMedia = ({
     }
   };
 
-  console.log(courseData)
+  console.log(courseData);
 
   useEffect(() => {
     if (isSuccess) {
@@ -469,21 +469,22 @@ const CourseContentMedia = ({
                       </small>
                     </div>
                   </div>
-                  {user?.role === "admin" && (
-                    <span
-                      className="text-[#000000b8] dark:text-[#ffffff83] cursor-pointer"
-                      onClick={() => {
-                        setIsReviewReply(true);
-                        setReviewId(review._id);
-                      }}
-                    >
-                      {!isReviewReply ? "Add Reply" : "Hide Reply"}
-                      <BiMessage
-                        size={20}
-                        className="cursor-pointer dark:text-[#ffffff83] text-[#000000b8]"
-                      />
-                    </span>
-                  )}
+                  {user?.role === "admin" &&
+                    review?.commentReplies?.length === 0 && (
+                      <span
+                        className="text-[#000000b8] dark:text-[#ffffff83] cursor-pointer"
+                        onClick={() => {
+                          setIsReviewReply(true);
+                          setReviewId(review._id);
+                        }}
+                      >
+                        {!isReviewReply ? "Add Reply" : "Hide Reply"}
+                        <BiMessage
+                          size={20}
+                          className="cursor-pointer dark:text-[#ffffff83] text-[#000000b8]"
+                        />
+                      </span>
+                    )}
 
                   {isReviewReply && reviewId === review?._id && (
                     <div className="w-full flex relative dark:text-white text-black ">

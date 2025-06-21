@@ -20,7 +20,7 @@ const Courses = () => {
         Opportunity With Our Courses
       </h1>
 
-      <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 2xl:grid-cols-4 2xl:gap-[35px] mb-12 border-0 ">
+      <div className="grid justify-center grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 2xl:grid-cols-4 2xl:gap-[35px] mb-12 border-0  ">
         {courses &&
           courses.map((course: any, index: number) => (
             <CourseCard key={index} course={course} />

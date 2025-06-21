@@ -37,8 +37,14 @@ export const sendToken = async (
   const accessToken = user.SignAccessToken();
   const refreshToken = user.SignRefreshToken();
 
-  // upload session to redis
-  await redisClient.set(user._id, JSON.stringify(user) as any);
+  // upload session to redis if available
+  if (redisClient) {
+    try {
+      await redisClient.set(user._id, JSON.stringify(user) as any);
+    } catch (error) {
+      console.warn('Failed to store user session in Redis:', error);
+    }
+  }
 
   // only set secure to true in production
   if (process.env.NODE_ENV === "production") {

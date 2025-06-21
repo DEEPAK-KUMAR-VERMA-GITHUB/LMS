@@ -9,6 +9,7 @@ import orderRoutes from "./routes/Order.route";
 import notificationRoutes from "./routes/notification.route";
 import analyticsRoutes from "./routes/analytics.route";
 import layoutRoutes from "./routes/layout.route";
+import { rateLimit } from "express-rate-limit";
 
 dotenv.config();
 
@@ -23,10 +24,39 @@ app.use(cookieParser());
 // cors
 app.use(
   cors({
-    origin: ['http://localhost:3000'],
+    origin: ["http://localhost:3000"],
     credentials: true,
   })
 );
+
+// implement rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: {
+    status: false,
+    message: "Too many requests from this IP, please try again after 15 minutes",
+  },
+  // Skip rate limiting for health check
+  skip: (req) => req.path === '/health',
+});
+
+// stricter rate limiter for auth routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 auth requests per 15 minutes
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    status: false,
+    message: "Too many authentication attempts, please try again after 15 minutes",
+  },
+});
+
+// use rate limiter
+app.use(limiter);
 
 // health check route
 app.get("/health", (req: Request, res: Response) => {
@@ -36,8 +66,8 @@ app.get("/health", (req: Request, res: Response) => {
   });
 });
 
-// API routes
-app.use("/api/v1/users", userRoutes);
+// API routes with specific rate limits
+app.use("/api/v1/users", authLimiter, userRoutes);
 app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/notifications", notificationRoutes);

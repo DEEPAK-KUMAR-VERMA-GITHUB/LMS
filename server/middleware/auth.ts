@@ -3,6 +3,7 @@ import { catchAsyncErrors } from "./catchAsyncErrors";
 import jwt, { Secret } from "jsonwebtoken";
 import ErrorHandler from "../utils/ErrorHandler";
 import redisClient from "../db/redis";
+import { UserModel } from "../models/user.model";
 
 // authenticated user
 export const isAuthenticated = catchAsyncErrors(
@@ -25,13 +26,26 @@ export const isAuthenticated = catchAsyncErrors(
       return next(ErrorHandler.validationError("Invalid access token"));
     }
 
-    const user = await redisClient.get(decoded.id);
-
-    if (!user) {
-      return next(ErrorHandler.notFound("User not found"));
+    let user = null;
+    if (redisClient) {
+      try {
+        user = await redisClient.get(decoded.id);
+        req.user = JSON.parse(user);
+      } catch (error) {
+        console.warn("Failed to get user from Redis:", error);
+      }
     }
 
-    req.user = JSON.parse(user);
+    if (!user) {
+      // if not found in redis then get from database
+      user = await UserModel.findById(decoded.id);
+
+      if (!user) {
+        return next(ErrorHandler.unAuthorized("User not found"));
+      }
+
+      req.user = user;
+    }
 
     next();
   }

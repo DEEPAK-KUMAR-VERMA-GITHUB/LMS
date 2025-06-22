@@ -28,7 +28,9 @@ const CourseDetails = ({
   setOpen: openAuthModel,
   setRoute,
 }: Props) => {
-  const { data: userData } = useLoadUserQuery(undefined, {});
+  const { data: userData } = useLoadUserQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
   const [user, setUser] = useState<any>();
   const [open, setOpen] = useState<boolean>(false);
   const [isPurchased, setIsPurchased] = useState<boolean>(false);
@@ -154,8 +156,7 @@ const CourseDetails = ({
                       {Number.isInteger(courseData?.ratings)
                         ? courseData?.ratings.toFixed(1)
                         : courseData?.ratings.toFixed(2)}
-                      &nbsp;Course Ratings
-                      &nbsp;•  {courseData?.reviews?.length}{" "}
+                      &nbsp;Course Ratings &nbsp;• {courseData?.reviews?.length}{" "}
                       Reviews
                     </h5>
                   </div>

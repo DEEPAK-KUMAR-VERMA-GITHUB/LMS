@@ -10,7 +10,11 @@ import Footer from "@/app/components/Footer";
 const Page = () => {
   const params = useParams();
   const id = params?.id as string;
-  const { isLoading, error, data } = useLoadUserQuery(undefined, {});
+  const { isLoading, error, data } = useLoadUserQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
 
   useEffect(() => {
     if (data) {

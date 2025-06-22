@@ -45,7 +45,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               <Custom>{children}</Custom>
               <Toaster position="top-center" reverseOrder={false} />
-              <SecurityProtection />
+              {/* <SecurityProtection /> */}
             </ThemeProvider>
           </SessionProvider>
         </Providers>
@@ -59,6 +59,8 @@ const Custom: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     {},
     {
       refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+      refetchOnReconnect: true,
     }
   );
 

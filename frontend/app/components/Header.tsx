@@ -42,6 +42,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
     refetch,
   } = useLoadUserQuery(undefined, {
     refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
     refetchOnReconnect: true,
   });
 
@@ -157,7 +158,9 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, setRoute, open }) => {
                 <Link href="/profile">
                   <Image
                     src={
-                      userData?.user.avatar ? userData?.user?.avatar?.url : avatar
+                      userData?.user.avatar
+                        ? userData?.user?.avatar?.url
+                        : avatar
                     }
                     alt={userData.user.name}
                     width={30}

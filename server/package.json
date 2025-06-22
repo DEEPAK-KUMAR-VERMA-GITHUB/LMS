@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "node build/index.js",
-    "build": "tsc",
+    "build": "tsc && cpx \"mails/**/*.*\" build/mails",
     "dev": "ts-node-dev --respawn --transpile-only index.ts"
   },
   "keywords": [],
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@types/node-cron": "^3.0.11",
-    "@types/nodemailer": "^6.4.17"
+    "@types/nodemailer": "^6.4.17",
+    "cpx": "^1.5.0"
   }
 }
